@@ -1,0 +1,7 @@
+{
+  "name": "CSIC",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
