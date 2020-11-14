@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/index"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pembayaran</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Nomor Virtual Akun</ion-label>
+        <ion-input type="text" ngModel name="virtualacc"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Total Pembayaran</ion-label>
+        <ion-input type="text" ngModel name="totalpayment"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Jenis Kategori</ion-label>
+        <ion-select ngModel name="kategori" cancelText="Dismiss">
+          <ion-select-option value="1">Makanan</ion-select-option>
+          <ion-select-option value="2">Hangout</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Catatan</ion-label>
+        <ion-textarea type="text" ngModel name="catatan"></ion-textarea>
+      </ion-item>
+    </ion-list>
+    <ion-row>
+      <ion-col size-md="6" size-xs="6">
+        <ion-button type="submit" color="primary" expand="block">Bayar</ion-button>
+      </ion-col>
+      <ion-col size-md="6" size-xs="6">
+        <ion-button routerLink="/index" color="danger" expand="block">Cancel</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

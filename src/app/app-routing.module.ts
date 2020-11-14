@@ -31,6 +31,24 @@ const routes: Routes = [
     path: 'topup-user',
     loadChildren: () => import('./topup-user/topup-user.module').then( m => m.TopupUserPageModule)
   },
+  {
+    path: 'kategori',
+    loadChildren: () => import('./pages/kategori/kategori.module').then( m => m.KategoriPageModule)
+  },
+  {
+    path: 'index',
+    loadChildren: () => import('./pages/index-user/index-user.module').then( m => m.IndexUserPageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./pages/payment/payment.module').then( m => m.PaymentPageModule)
+  },
+  {
+    path: 'about-us',
+    loadChildren: () => import('./pages/about-us/about-us.module').then( m => m.AboutUsPageModule)
+  },
+
+
 ];
 
 @NgModule({
