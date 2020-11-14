@@ -19,8 +19,18 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
-
-
+  {
+    path: 'history',
+    loadChildren: () => import('./history/history.module').then( m => m.HistoryPageModule)
+  },
+  {
+    path: 'lock-user',
+    loadChildren: () => import('./lock-user/lock-user.module').then( m => m.LockUserPageModule)
+  },
+  {
+    path: 'topup-user',
+    loadChildren: () => import('./topup-user/topup-user.module').then( m => m.TopupUserPageModule)
+  },
 ];
 
 @NgModule({
