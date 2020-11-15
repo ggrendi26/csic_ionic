@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="home"></ion-back-button>
+            <ion-back-button defaultHref="index"></ion-back-button>
         </ion-buttons>
         <ion-title>
             Lock Saldo
@@ -9,25 +9,29 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <ion-item>
-        <ion-label position="stacked">Tanggal Selesai Kunci</ion-label>
-        <ion-datetime placeholder="Select Date"></ion-datetime>
-    </ion-item>
+<ion-content padding-class="class-bg">
+    <ion-card>
+        <ion-item>
+            <div>
+                <ion-icon name="calendar" slot="start"></ion-icon>
+                <ion-label position="floating">Tanggal Selesai Kunci</ion-label>
+            </div>
+            <ion-datetime placeholder="Select Date"></ion-datetime>
+        </ion-item>
 
-    <ion-item>
-        <ion-label>Total Saldo</ion-label>
-        <ion-label position="stacked">Rp</ion-label>
-        <ion-input type="number">
+        <ion-item>
+            <ion-label>Total Saldo</ion-label>
+            <ion-label position="stacked">Rp</ion-label>
+            <ion-input type="number">
 
-        </ion-input>
-    </ion-item>
+            </ion-input>
+        </ion-item>
 
-    <ion-item>
-        <ion-label position="stacked">Catatan</ion-label>
-        <ion-textarea placeholder=""></ion-textarea>
-    </ion-item>
-
+        <ion-item>
+            <ion-label position="stacked">Catatan</ion-label>
+            <ion-textarea placeholder=""></ion-textarea>
+        </ion-item>
+    </ion-card>
     <div class="buttons">
         <ion-button color="secondary">Save</ion-button>
         <ion-button color="danger">Cancel</ion-button>
