@@ -1,0 +1,12 @@
+.card-half {
+  width: 50%;
+  display: inline-block;
+  box-shadow: none;
+}
+.card-parent {
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0);
+}

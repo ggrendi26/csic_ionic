@@ -94,9 +94,27 @@ const routes: Routes = [
       import("./pages/admin/home-admin/home-admin.module").then(
         (m) => m.HomeAdminPageModule
       ),
+  },
+  {
+    path: "history-admin",
+    loadChildren: () =>
+      import("./pages/admin/history-admin/history-admin.module").then(
+        (m) => m.HistoryAdminPageModule
+      ),
+  },
+  {
+    path: "log-lock-admin",
+    loadChildren: () =>
+      import("./pages/admin/log-lock-admin/log-lock-admin.module").then(
+        (m) => m.LogLockAdminPageModule
+      ),
   },  {
-    path: 'history-admin',
-    loadChildren: () => import('./pages/admin/history-admin/history-admin.module').then( m => m.HistoryAdminPageModule)
+    path: 'data-pengguna-admin',
+    loadChildren: () => import('./pages/admin/data-pengguna-admin/data-pengguna-admin.module').then( m => m.DataPenggunaAdminPageModule)
+  },
+  {
+    path: 'unlock-admin',
+    loadChildren: () => import('./pages/admin/unlock-admin/unlock-admin.module').then( m => m.UnlockAdminPageModule)
   },
 
 ];

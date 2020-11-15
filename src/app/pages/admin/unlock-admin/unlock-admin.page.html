@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-admin"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Unlock Admin</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content style="padding-top: 1%">
+      Nama: Lucky <br />
+      Dikunci dari 11 Agustus 2020 <br />
+      Hingga 31 Agustus 2020 <br />
+      Catatan: Deposit <br />
+      Total saldo yang dikunci <br />
+      Rp. 200.000,-
+    </ion-card-content>
+  </ion-card>
+  <ion-card color="success">
+    <ion-card-content style="padding-top: 1%"
+      >Saldo Akhir: 500.000,-
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content style="padding-top: 1%">
+      Alasan Pembukaan
+      <ion-input type="text" placeholder="Biaya Rumah Sakit"></ion-input>
+    </ion-card-content>
+  </ion-card>
+  <ion-row>
+    <ion-col size-md="6" size-xs="6">
+      <ion-button routerLink="/home-admin" color="primary" expand="block"
+        >Unlock</ion-button
+      >
+    </ion-col>
+    <ion-col size-md="6" size-xs="6">
+      <ion-button routerLink="/home-admin" color="danger" expand="block"
+        >Cancel</ion-button
+      >
+    </ion-col>
+  </ion-row>
+</ion-content>
