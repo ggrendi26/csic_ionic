@@ -1,10 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>daftar</ion-title>
+    <ion-title>Daftar</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-text class="mid" style="color:black">
+    <h1>Daftar User Baru</h1>
+  </ion-text>
   <form class="form" [formGroup]="validations_form" (ngSubmit)="tryRegister(validations_form.value)">
 
     <ion-item>
@@ -33,10 +36,13 @@
       </ng-container>
     </div>
 
-
-    <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid">Register</ion-button>
+    <div class="mid">
+      <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid">Register</ion-button>
+    </div>  
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
   </form>
-  <p class="go-to-login">Already have an account? <a (click)="goLoginPage()">Try to Log In.</a></p>
+  <div class="mid">
+    <p class="go-to-login" style="color:black;">Already have an account? <a (click)="goLoginPage()">Try to Log In.</a></p>
+  </div>
 </ion-content>
