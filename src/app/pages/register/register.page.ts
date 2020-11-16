@@ -14,11 +14,11 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
   register(form) {
-      this.router.navigateByUrl('');
+      // this.router.navigateByUrl('');
 
-    // this.authService.register(form.value).subscribe((res) => {
-    //   this.router.navigateByUrl('home');
-    // });
+    this.authService.registerUser(form.value).then((res) => {
+      this.router.navigateByUrl('home');
+    });
   }
 
 }
