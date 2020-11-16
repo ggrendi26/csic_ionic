@@ -35,8 +35,18 @@ export class LoginPage implements OnInit {
       { type: 'minlength', message: 'Password must be at least 5 characters long.' }
     ]
   };
-  login(form){
-    this.router.navigateByUrl('/index');
+  loginUser(value){
+    this.authService.loginUser(value)
+      .then(res => {
+        console.log(res);
+        this.errorMessage = "";
+        this.router.navigateByUrl('/index');
+      }, err => {
+        this.errorMessage = err.message;
+      })
 
+  }
+  goToRegisterPage(){
+    this.router.navigateByUrl('/register');
   }
 }
