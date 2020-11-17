@@ -41,12 +41,16 @@
       </ng-container>
     </div>
     <div class="mid">
-      <ion-button class="submit-btn" type="submit" style="text-align:center;align-items: center;" [disabled]="!validations_form.valid">Log In</ion-button>
+      <ion-button class="submit-btn" type="submit" expand="block" style="text-align:center;align-items: center;" [disabled]="!validations_form.valid">Log In</ion-button>
     </div>
 
     <label class="error-message">{{errorMessage}}</label>
   </form>
-  <p class="go-to-register mid" style="color:black">
+  
+  <div class="mid">
+    <ion-button class="go-to-register mid" expand="block" style="text-align:center;align-items: center;" (click)="goToRegisterPage()" color="light">Register</ion-button>
+  </div>
+  <!-- <p class="go-to-register mid" style="color:black">
     No account yet? <a (click)="goToRegisterPage()" style="color:blue">Create an account.</a>
-  </p>
+  </p> -->
 </ion-content>

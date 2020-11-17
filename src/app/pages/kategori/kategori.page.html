@@ -13,14 +13,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item routerLink="edit/1">
-      <ion-col size-md="6" size-xs="6"> Makanan </ion-col>
-      <ion-col size-md="6" size-xs="6"> Rp.200.000,- </ion-col>
+  <ion-list *ngFor="let k of kategori">
+    <ion-item *ngIf="userKey === k.uid" routerLink="edit/{{ k.key }}">
+      <ion-col size-md="6" size-xs="6"> {{ k.nama }} </ion-col>
+      <ion-col size-md="6" size-xs="6"> Rp. {{ k.max }},- </ion-col>
     </ion-item>
-    <ion-item routerLink="edit/2">
+    <!-- <ion-item routerLink="edit/2">
       <ion-col size-md="6" size-xs="6"> Hangout </ion-col>
       <ion-col size-md="6" size-xs="6"> Rp.100.000,- </ion-col>
-    </ion-item>
+    </ion-item> -->
   </ion-list>
 </ion-content>

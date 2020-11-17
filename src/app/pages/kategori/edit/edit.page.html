@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Edit Kategori</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
+      <ion-button (click)="presentDeleteAlert()">
         <ion-icon name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,23 +13,40 @@
 </ion-header>
 
 <ion-content>
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
-    <ion-list>
-      <ion-item>
-        <ion-label position="floating">Nama Kategori</ion-label>
-        <ion-input type="text" ngModel name="nama"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Maksimum Pengeluaran</ion-label>
-        <ion-input type="text" ngModel name="max"></ion-input>
-      </ion-item>
-    </ion-list>
+  <form [formGroup]="validations_form">
+    <ion-item>
+      <ion-label position="floating" color="primary">Nama</ion-label>
+      <ion-input type="text" formControlName="nama"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.nama">
+        <div class="error_message"
+          *ngIf="validations_form.get('nama').hasError(validation.type) && (validations_form.get('nama').dirty || validations_form.get('nama').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Maksimum Pengeluaran</ion-label>
+      <ion-input type="number" formControlName="max"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.max">
+        <div class="error_message"
+          *ngIf="validations_form.get('max').hasError(validation.type) && (validations_form.get('max').dirty || validations_form.get('max').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    
+    <ion-input type="text" formControlName="uid" hidden value="{{ userKey }}"></ion-input>
     <ion-row>
       <ion-col size-md="6" size-xs="6">
-        <ion-button type="submit" color="primary" expand="block">Simpan</ion-button>
+        <ion-button (click)="onSubmit(validations_form.value)" color="primary" expand="block" [disabled]="!validations_form.valid">Simpan</ion-button>
       </ion-col>
       <ion-col size-md="6" size-xs="6">
-        <ion-button routerLink="/kategori" color="danger" expand="block">Cancel</ion-button>
+        <ion-button (click)="goBack()" color="danger" expand="block">Cancel</ion-button>
       </ion-col>
     </ion-row>
   </form>

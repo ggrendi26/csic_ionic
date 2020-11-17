@@ -47,7 +47,7 @@
       </ion-menu-toggle>
       <ion-footer>
         <ion-menu-toggle menu="userMenu">
-          <ion-item lines="none" routerLink=''>
+          <ion-item lines="none" (click)="LogoutUser()">
             <ion-icon name="exit-outline"></ion-icon>&nbsp;&nbsp;
             <ion-label>Log Out</ion-label>
           </ion-item>
