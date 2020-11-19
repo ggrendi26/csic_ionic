@@ -21,8 +21,7 @@
       <ion-item>
         <ion-label position="floating">Jenis Kategori</ion-label>
         <ion-select ngModel name="kategori" cancelText="Dismiss">
-          <ion-select-option value="1">Makanan</ion-select-option>
-          <ion-select-option value="2">Hangout</ion-select-option>
+          <ion-select-option *ngFor="let k of kategori" value="{{ k.nama }}">{{ k.nama }}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>

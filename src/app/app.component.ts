@@ -30,7 +30,7 @@ export class AppComponent {
 
   LogoutUser(){
     this.authSrv.logoutUser().then(res => {
-      console.log(res);
+      // console.log(res);
       this.navCtrl.navigateBack('');
     }).catch(error => {
       console.log(error);
