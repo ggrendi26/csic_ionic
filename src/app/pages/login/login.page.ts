@@ -11,9 +11,20 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 export class LoginPage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
-  constructor(private  authService:  AuthService, private  router:  Router,     private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private authSrv: AuthService) { }
 
   ngOnInit() {
+    this.authSrv.userDetails().subscribe(res => {
+      if(res !== null){
+        this.router.navigateByUrl('/index');
+      } else {
+        this.router.navigateByUrl('/login');
+      }
+    }, err => {
+      console.log(err);
+      // this.router.navigateByUrl('/login');
+    });
+
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
