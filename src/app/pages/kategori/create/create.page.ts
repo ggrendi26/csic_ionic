@@ -36,6 +36,18 @@ export class CreatePage implements OnInit {
   };
 
   ngOnInit() {
+    this.validations_form = this.formBuilder.group({
+      nama: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      max: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      uid: new FormControl('', Validators.compose([])),
+    });
+  }
+
+  ionViewDidEnter(){
     this.authSrv.userDetails().subscribe(res => {
       if(res !== null){
         this.userEmail = res.email;
@@ -48,16 +60,6 @@ export class CreatePage implements OnInit {
     }, err => {
       console.log(err);
       // this.router.navigateByUrl('/login');
-    });
-
-    this.validations_form = this.formBuilder.group({
-      nama: new FormControl('', Validators.compose([
-        Validators.required
-      ])),
-      max: new FormControl('', Validators.compose([
-        Validators.required
-      ])),
-      uid: new FormControl('', Validators.compose([])),
     });
   }
 
