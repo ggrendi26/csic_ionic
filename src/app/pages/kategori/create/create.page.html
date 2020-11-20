@@ -38,7 +38,7 @@
     <ion-input type="text" formControlName="uid" hidden value="{{ userKey }}"></ion-input>
     <ion-row>
       <ion-col size-md="6" size-xs="6">
-        <ion-button (click)="onSubmit(validations_form.value)" color="primary" expand="block" [disabled]="!validations_form.valid">Simpan</ion-button>
+        <ion-button (click)="onSubmit(validations_form.value)" color="success" expand="block" [disabled]="!validations_form.valid">Simpan</ion-button>
       </ion-col>
       <ion-col size-md="6" size-xs="6">
         <ion-button (click)="goBack()" color="danger" expand="block">Cancel</ion-button>

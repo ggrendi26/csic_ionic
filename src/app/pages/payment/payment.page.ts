@@ -29,7 +29,7 @@ export class PaymentPage implements OnInit {
       if(res !== null){
         this.userEmail = res.email;
         this.userKey = res.uid;
-        console.log(this.userKey);
+        // console.log(this.userKey);
       } else {
         this.router.navigateByUrl('login');
       }
@@ -49,7 +49,7 @@ export class PaymentPage implements OnInit {
       console.log(this.userKey);
       for(var i = 0; i < this.Allkategori.length; i++){
         if(this.Allkategori[i].uid === this.userKey){
-          console.log(this.Allkategori[i]);
+          // console.log(this.Allkategori[i]);
           this.kategori.push(this.Allkategori[i]);
         }
       }
@@ -78,6 +78,6 @@ export class PaymentPage implements OnInit {
   }
 
   onSubmit(form: NgForm){
-    console.log(form);
+    // console.log(form);
   }
 }
