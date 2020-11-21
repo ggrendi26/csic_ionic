@@ -14,31 +14,28 @@ export class LoginPage implements OnInit {
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private authSrv: AuthService) { }
 
   ngOnInit() {
-  }
-
-  ionViewDidEnter(){
     this.authSrv.userDetails().subscribe(res => {
       if(res !== null){
         this.router.navigateByUrl('/index');
       } else {
         this.router.navigateByUrl('/login');
-        this.validations_form = this.formBuilder.group({
-          email: new FormControl('', Validators.compose([
-            Validators.required,
-            Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-          ])),
-          password: new FormControl('', Validators.compose([
-            Validators.minLength(5),
-            Validators.required
-          ])),
-        });
       }
     }, err => {
       console.log(err);
       // this.router.navigateByUrl('/login');
     });
-  }
 
+    this.validations_form = this.formBuilder.group({
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      ])),
+      password: new FormControl('', Validators.compose([
+        Validators.minLength(5),
+        Validators.required
+      ])),
+    });
+  }
   validation_messages = {
     'email': [
       { type: 'required', message: 'Email is required.' },
