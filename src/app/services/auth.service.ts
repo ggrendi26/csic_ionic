@@ -47,4 +47,7 @@ export class AuthService {
   userDetails() {
     return this.afAuth.user
   }
+  isAuthenticated(){
+    return this.afAuth.authState !== null;
+  }
 }
