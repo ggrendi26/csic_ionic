@@ -54,6 +54,9 @@ export class RegisterPage implements OnInit {
 
  
   ngOnInit() {
+  }
+
+  ionViewDidEnter(){
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -78,7 +81,6 @@ export class RegisterPage implements OnInit {
         Validators.required
       ])),
     });
-
   }
 
   async tryRegister(value) {
