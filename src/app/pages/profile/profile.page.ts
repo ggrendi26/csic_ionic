@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 export class ProfilePage implements OnInit {
   profile = null;
   uid;
+  profileImageUrl = ""
   constructor(
     private navCtrl: NavController,
     private authService: AuthService,
@@ -40,6 +41,12 @@ export class ProfilePage implements OnInit {
       if(doc.exists){
         console.log(doc.data());
         this.profile = doc.data();
+        this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).then((res)=>{
+          this.profileImageUrl = res;
+          console.log(res)
+        }).catch((error)=>{
+            console.log(error);
+        });
       }else{
         console.log('error getting document', doc)
       }

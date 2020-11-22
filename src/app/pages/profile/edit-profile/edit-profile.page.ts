@@ -19,6 +19,10 @@ export class EditProfilePage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
+  imageFilePath ='';
+  file: File;
+  fileExtension = '';
+  profileImageUrl;
   constructor(
     private navCtrl: NavController,
     private authService: AuthService,
@@ -43,6 +47,8 @@ export class EditProfilePage implements OnInit {
     ],
     'alamat': [
       { type: 'required', message: 'Alamat is required.' },
+    ],
+    'profilePic': [
     ]
   };
 
@@ -52,7 +58,7 @@ export class EditProfilePage implements OnInit {
       if(res !== null){
         this.uid = res.uid;
         this.getUserInfo();
-
+       
       } else {
         this.uid = '';
       }
@@ -75,6 +81,8 @@ export class EditProfilePage implements OnInit {
       alamat: new FormControl('', Validators.compose([
         Validators.required
       ])),
+      profilePic: new FormControl('', Validators.compose([
+      ])),
     });
 
   }
@@ -89,6 +97,12 @@ export class EditProfilePage implements OnInit {
         this.tglLahir= this.profile.tglLahir;
         this.alamat= this.profile.alamat;
         this.telepon= this.profile.telepon;
+        this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).then((res)=>{
+          this.profileImageUrl = res;
+          console.log(res)
+        }).catch((error)=>{
+            console.log(error);
+        });
       }else{
         console.log('tidak ada document', doc)
       }
@@ -99,13 +113,16 @@ export class EditProfilePage implements OnInit {
   async editProfile(value) {
     // console.log(value);
     const loading = await this.loadingCtrl.create();
-   
+    if(this.fileExtension){
+      this.uploadProfileImage();
+    }
    
     this.firestoreService.updateProfile(
       value.nama,
       value.tglLahir,
       value.telepon,
-      value.alamat, this.uid).then(
+      value.alamat,
+      this.fileExtension, this.uid).then(
         () => {
           loading.dismiss().then(() => {
             this.router.navigateByUrl('/index');
@@ -127,4 +144,29 @@ export class EditProfilePage implements OnInit {
   goLoginPage() {
     this.navCtrl.navigateBack('');
   }
+  changelistener(event) : void {
+    console.log("masuk changelistener");
+    console.log(event.target.files[0].name);
+    if(event.target.files[0]){
+      this.fileExtension = this.getFileExtension(event.target.files[0].name);
+      this.file = event.target.files[0];
+      const reader = new FileReader();
+        reader.readAsDataURL(this.file);
+        reader.onload = event => {
+          console.log(reader.result)
+          this.profileImageUrl = reader.result;
+        };
+    }
+   
+  }
+
+  uploadProfileImage(){
+    console.log("uploadProfileImage");
+    this.firestoreService.uploadProfileImage(this.file, this.fileExtension, this.uid);
+  }
+  getFileExtension(filename){
+    return filename.split('.').pop();
+
+  }
 }
+

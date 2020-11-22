@@ -87,7 +87,11 @@
         </div>
       </ng-container>
     </div>
-
+    <ion-item>
+      <ion-label id="profile_image" color="primary" stacked>Profile Image</ion-label>
+      <!-- <ion-input type="file" accept="image/*" id="upload" formControlName="profilePic" [(ngModel)]="imageFilePath" (ionChange)="changelistener($event)"></ion-input> -->
+      <input type="file" formControlName="profilePic" [(ngModel)]="imageFilePath" (change)="changelistener($event)">
+    </ion-item>
 
     <div class="mid">
       <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid">Register</ion-button>
