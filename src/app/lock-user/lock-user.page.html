@@ -10,32 +10,35 @@
 </ion-header>
 
 <ion-content padding-class="class-bg">
-    <ion-card class=card-parent>
 
-        <ion-item>
-            <div>
-                <ion-icon name="calendar" slot="start"></ion-icon>
-            </div>
-            <ion-label position="floating">Tanggal Selesai Kunci</ion-label>
-            <ion-datetime placeholder="Select Date"></ion-datetime>
-        </ion-item>
+    <!-- <form [formGroup]="createLockForm" (submit)="requestLock()">
+        <ion-card class=card-parent>
+            <ion-item>
+                <div>
+                    <ion-icon name="calendar" slot="start"></ion-icon>
+                </div>
+                <ion-label position="floating">Tanggal Selesai Kunci</ion-label>
+                <ion-datetime placeholder="Select Date"></ion-datetime>
+            </ion-item>
 
-        <ion-item>
-            <ion-label>Total Saldo</ion-label>
-            <ion-label position="stacked">Rp</ion-label>
-            <ion-input type="number">
+            <ion-item>
+                <ion-label>Total Saldo</ion-label>
+                <ion-label position="stacked">Rp</ion-label>
+                <ion-input type="number">
 
-            </ion-input>
-        </ion-item>
+                </ion-input>
+            </ion-item>
 
-        <ion-item>
-            <ion-label position="stacked">Catatan</ion-label>
-            <ion-textarea placeholder=""></ion-textarea>
-        </ion-item>
-    </ion-card>
-    <div class="buttons">
-        <ion-button color="secondary">Save</ion-button>
-        <ion-button color="danger">Cancel</ion-button>
-    </div>
+            <ion-item>
+                <ion-label position="stacked">Catatan</ion-label>
+                <ion-textarea placeholder=""></ion-textarea>
+            </ion-item>
+
+        </ion-card>
+        <div class="buttons">
+            <ion-button color="secondary" type="submit">Save</ion-button>
+            <ion-button color="danger">Cancel</ion-button>
+        </div>
+    </form> -->
 
 </ion-content>
