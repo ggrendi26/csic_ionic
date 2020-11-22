@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-text class="mid" style="color:black">
+    <h1>Edit Profile</h1>
+  </ion-text>
+  <form class="form" [formGroup]="validations_form" (ngSubmit)="tryRegister(validations_form.value)">
+
+    <ion-item>
+      <ion-label position="floating" color="secondary">Nama</ion-label>
+      <ion-input type="text" formControlName="nama"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.nama">
+        <div class="error-message"
+          *ngIf="validations_form.get('nama').hasError(validation.type) && (validations_form.get('nama').dirty || validations_form.get('nama').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating" color="secondary">Tanggal Lahir</ion-label>
+      <ion-datetime  formControlName="tglLahir" displayFormat="DD/MM/YYYY"></ion-datetime>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.tglLahir">
+        <div class="error-message"
+          *ngIf="validations_form.get('tglLahir').hasError(validation.type) && (validations_form.get('tglLahir').dirty || validations_form.get('tglLahir').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+   
+    <ion-item>
+      <ion-label position="floating" color="secondary">Email</ion-label>
+      <ion-input type="text" formControlName="email"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.email">
+        <div class="error-message"
+          *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating" color="secondary">Password</ion-label>
+      <ion-input type="password" formControlName="password" class="form-controll" required></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.password">
+        <div class="error-message"
+          *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating" color="secondary">Nomor Telepon</ion-label>
+      <ion-input type="text" formControlName="telepon"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.telepon">
+        <div class="error-message"
+          *ngIf="validations_form.get('telepon').hasError(validation.type) && (validations_form.get('telepon').dirty || validations_form.get('telepon').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    
+    <ion-item>
+      <ion-label position="floating" color="secondary">Alamat</ion-label>
+      <ion-input type="text" formControlName="alamat"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.alamat">
+        <div class="error-message"
+          *ngIf="validations_form.get('alamat').hasError(validation.type) && (validations_form.get('alamat').dirty || validations_form.get('alamat').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+
+    <div class="mid">
+      <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid">Edit Profile</ion-button>
+    </div>  
+    <label class="error-message">{{errorMessage}}</label>
+    <label class="success-message">{{successMessage}}</label>
+  </form>
+</ion-content>

@@ -11,10 +11,10 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 export class LoginPage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private authSrv: AuthService) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.authSrv.userDetails().subscribe(res => {
+    this.authService.userDetails().subscribe(res => {
       if(res !== null){
         this.router.navigateByUrl('/index');
       } else {

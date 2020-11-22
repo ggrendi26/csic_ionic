@@ -116,6 +116,10 @@ const routes: Routes = [
     path: 'unlock-admin',
     loadChildren: () => import('./pages/admin/unlock-admin/unlock-admin.module').then( m => m.UnlockAdminPageModule)
   },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  },
 
 ];
 

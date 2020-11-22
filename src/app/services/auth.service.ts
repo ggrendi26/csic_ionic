@@ -5,14 +5,18 @@ import { AngularFireAuth } from '@angular/fire/auth';
   providedIn: 'root'
 })
 export class AuthService {
+  authState: any;
 
   constructor(
     private afAuth: AngularFireAuth
-  ) { }
+  ) { 
+    this.afAuth.authState.subscribe((auth) => {
+      this.authState = auth
+    });
+  }
 
   registerUser(value) {
     return new Promise<any>((resolve, reject) => {
-
       this.afAuth.createUserWithEmailAndPassword(value.email, value.password)
         .then(
           res => resolve(res),
@@ -47,6 +51,7 @@ export class AuthService {
   userDetails() {
     return this.afAuth.user
   }
+ 
   isAuthenticated(){
     return this.afAuth.authState !== null;
   }
