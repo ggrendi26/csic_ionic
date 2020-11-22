@@ -10,7 +10,15 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./edit-profile.page.scss'],
 })
 export class EditProfilePage implements OnInit {
-
+  profile = null;
+  uid;
+  nama= "";
+  tglLahir= "";
+  alamat= "";
+  telepon= "";
+  validations_form: FormGroup;
+  errorMessage: string = '';
+  successMessage: string = '';
   constructor(
     private navCtrl: NavController,
     private authService: AuthService,
@@ -20,20 +28,9 @@ export class EditProfilePage implements OnInit {
     public loadingCtrl: LoadingController,
   ) { }
 
-  
-  validations_form: FormGroup;
-  errorMessage: string = '';
-  successMessage: string = '';
+
 
   validation_messages = {
-    'email': [
-      { type: 'required', message: 'Email is required.' },
-      { type: 'pattern', message: 'Enter a valid email.' }
-    ],
-    'password': [
-      { type: 'required', message: 'Password is required.' },
-      { type: 'minlength', message: 'Password must be at least 5 characters long.' }
-    ],
     'nama': [
       { type: 'required', message: 'Nama is required.' },
     ],
@@ -51,15 +48,19 @@ export class EditProfilePage implements OnInit {
 
  
   ngOnInit() {
+    this.authService.userDetails().subscribe(res => {
+      if(res !== null){
+        this.uid = res.uid;
+        this.getUserInfo();
+
+      } else {
+        this.uid = '';
+      }
+    }, err => {
+      console.log(err);
+      // this.router.navigateByUrl('/login');
+    });
     this.validations_form = this.formBuilder.group({
-      email: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ])),
-      password: new FormControl('', Validators.compose([
-        Validators.minLength(5),
-        Validators.required
-      ])),
       nama: new FormControl('', Validators.compose([
         Validators.required
       ])),
@@ -77,40 +78,50 @@ export class EditProfilePage implements OnInit {
     });
 
   }
-
-  async tryRegister(value) {
+ 
+  getUserInfo(){
+    console.log(this.uid);
+    this.firestoreService.getUserInfo(this.uid).then((doc) => {
+      if(doc.exists){
+        console.log(doc.data());
+        this.profile = doc.data();
+        this.nama = this.profile.nama;
+        this.tglLahir= this.profile.tglLahir;
+        this.alamat= this.profile.alamat;
+        this.telepon= this.profile.telepon;
+      }else{
+        console.log('tidak ada document', doc)
+      }
+  }).catch(function (error){
+    console.log('error getting document', error)
+  });
+  }
+  async editProfile(value) {
     // console.log(value);
     const loading = await this.loadingCtrl.create();
    
-    this.authService.registerUser(value)
-      .then(res => {
-        // console.log("disini");
-        // console.log(res);
-        this.errorMessage = "";
-        this.successMessage = "Your account has been created. Please log in.";
-        this.firestoreService.registerUser( value.email,
-          value.nama,
-          value.tglLahir,
-          value.telepon,
-          value.alamat, res.user.uid).then(
-            () => {
-              loading.dismiss().then(() => {
-                this.router.navigateByUrl('');
-              });
-            },
-            error => {
-              loading.dismiss().then(() => {
-                console.error(error);
-              });
-            }
-          );
-      }, err => {
-        console.log(err);
-        this.errorMessage = err.message;
-        this.successMessage = "";
-      })
+   
+    this.firestoreService.updateProfile(
+      value.nama,
+      value.tglLahir,
+      value.telepon,
+      value.alamat, this.uid).then(
+        () => {
+          loading.dismiss().then(() => {
+            this.router.navigateByUrl('/index');
+          });
+        },
+        error => {
+          loading.dismiss().then(() => {
+            console.error(error);
+          });
+        }
+      ), err => {
+    console.log(err);
+    this.errorMessage = err.message;
+    this.successMessage = "";
+  }
     return await loading.present();
-
   }
 
   goLoginPage() {

@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/profile"></ion-back-button>
+    </ion-buttons>
     <ion-title>Edit Profile</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -8,11 +11,11 @@
   <ion-text class="mid" style="color:black">
     <h1>Edit Profile</h1>
   </ion-text>
-  <form class="form" [formGroup]="validations_form" (ngSubmit)="tryRegister(validations_form.value)">
+  <form class="form" [formGroup]="validations_form" (ngSubmit)="editProfile(validations_form.value)">
 
     <ion-item>
       <ion-label position="floating" color="secondary">Nama</ion-label>
-      <ion-input type="text" formControlName="nama"></ion-input>
+      <ion-input type="text" formControlName="nama" [(ngModel)]="nama"></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.nama">
@@ -24,7 +27,7 @@
     </div>
     <ion-item>
       <ion-label position="floating" color="secondary">Tanggal Lahir</ion-label>
-      <ion-datetime  formControlName="tglLahir" displayFormat="DD/MM/YYYY"></ion-datetime>
+      <ion-datetime  formControlName="tglLahir" [(ngModel)]="tglLahir" displayFormat="DD/MM/YYYY"></ion-datetime>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.tglLahir">
@@ -35,36 +38,9 @@
       </ng-container>
     </div>
 
-   
-    <ion-item>
-      <ion-label position="floating" color="secondary">Email</ion-label>
-      <ion-input type="text" formControlName="email"></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.email">
-        <div class="error-message"
-          *ngIf="validations_form.get('email').hasError(validation.type) && (validations_form.get('email').dirty || validations_form.get('email').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-    <ion-item>
-      <ion-label position="floating" color="secondary">Password</ion-label>
-      <ion-input type="password" formControlName="password" class="form-controll" required></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.password">
-        <div class="error-message"
-          *ngIf="validations_form.get('password').hasError(validation.type) && (validations_form.get('password').dirty || validations_form.get('password').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
     <ion-item>
       <ion-label position="floating" color="secondary">Nomor Telepon</ion-label>
-      <ion-input type="text" formControlName="telepon"></ion-input>
+      <ion-input type="text" formControlName="telepon" [(ngModel)]="telepon"></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.telepon">
@@ -77,7 +53,7 @@
     
     <ion-item>
       <ion-label position="floating" color="secondary">Alamat</ion-label>
-      <ion-input type="text" formControlName="alamat"></ion-input>
+      <ion-input type="text" formControlName="alamat" [(ngModel)]="alamat"></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validation_messages.alamat">

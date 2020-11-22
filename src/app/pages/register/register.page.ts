@@ -98,7 +98,7 @@ export class RegisterPage implements OnInit {
           value.alamat, res.user.uid).then(
             () => {
               loading.dismiss().then(() => {
-                this.router.navigateByUrl('');
+                this.router.navigateByUrl('/index');
               });
             },
             error => {

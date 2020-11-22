@@ -19,12 +19,6 @@ export class ProfilePage implements OnInit {
     public loadingCtrl: LoadingController,
   ) { 
    
-
-    // this.profile = this.firestoreService.getUserInfo(this.authService.getUID());
-    // this.profile = this.authService.isAuthenticated();
-    // this.profile = this.authService.getUID();
-    // console.log(this.profile);
-    // db.collection('books').doc('fK3ddutEpD2qQqRMXNW5').get();
   }
 
   ngOnInit() {

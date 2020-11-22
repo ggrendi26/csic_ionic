@@ -39,4 +39,30 @@ export class FirestoreService {
   getUserInfo(UID:string){
     return this.firestore.doc(`users/${UID}`).ref.get()
   }
+  updateProfile(
+    nama: string,
+    tglLahir: string,
+    telepon: string,
+    alamat: string,
+    UID:string
+  ) {
+    var virtualAccount  = "0885" + telepon+ "002";
+    var saldo = 0;
+    var role = "User";
+    nama  = this.capitalizeWords(nama);
+    tglLahir = format(new Date(tglLahir), "yyyy-MM-dd");
+    var docRef = this.firestore.doc(`users/${UID}`);
+    return docRef.ref.get().then((doc) => {
+      if (doc.exists) {
+        //user is already there, write only last login
+        docRef.update({
+          nama,
+          tglLahir,
+          telepon,
+          alamat,
+        });
+      }
+    }).catch(function(error) {
+    });
+   }
 }
