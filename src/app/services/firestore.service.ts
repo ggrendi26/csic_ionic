@@ -15,16 +15,22 @@ export class FirestoreService {
     tglLahir: string,
     telepon: string,
     alamat: string,
+    UID:string
   ) {
+    var virtualAccount  = "0885" + telepon+ "002";
+    var saldo = 0;
+    var role = "Anggota";
     nama  = this.capitalizeWords(nama);
     tglLahir = format(new Date(tglLahir), "yyyy-MM-dd");
-    const id = this.firestore.createId();
-    return this.firestore.doc(`users/${id}`).set({
+    return this.firestore.doc(`users/${UID}`).set({
       email,
       nama,
       tglLahir,
       telepon,
       alamat,
+      virtualAccount,
+      saldo,
+      role
     });
    }
    capitalizeWords(text){
