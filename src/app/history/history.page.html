@@ -1,14 +1,76 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
         <ion-buttons slot="start">
-            <ion-menu-button menu="userMenu"></ion-menu-button>
+            <ion-back-button defaultHref="/index"></ion-back-button>
         </ion-buttons>
-        <ion-title>
-            Riwayat
-        </ion-title>
+        <ion-title>Riwayat</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <ion-card>
+        <ion-card class="card-parent">
+            <ion-card class="card-half">
+                <ion-item>
+                    <div>
+                        <ion-icon name="calendar"></ion-icon>
+                    </div>
+                    <ion-datetime placeholder="Mulai"></ion-datetime>
+                </ion-item>
+            </ion-card>
+            <ion-card class="card-half">
+                <ion-item>
+                    <div>
+                        <ion-icon name="calendar"></ion-icon>
+                    </div>
+                    <ion-datetime placeholder="Selesai"></ion-datetime>
+                </ion-item>
+            </ion-card>
+        </ion-card>
 
+        <ion-row>
+            <ion-col size-md="6" size-xs="12">
+                <ion-button type="submit" color="success" expand="block">Search</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+
+    <ion-card class="card-parent">
+        <ion-card class="card-partial ">
+            <ion-item routerLink="/topup-user"> Topup </ion-item>
+        </ion-card>
+        <ion-card class="card-partial">
+            <ion-item routerLink="/payment"> Pay </ion-item>
+        </ion-card>
+        <ion-card class="card-partial">
+            <ion-item routerLink="/lock-user"> Lock </ion-item>
+        </ion-card>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content style="padding-top: 1%">
+            <ion-list>
+                <ion-item>
+                    <ion-icon slot="start" name="ellipse-outline"></ion-icon>
+                    Lucky : <br /> 11 Agustus 2020 - <br /> 31 Agustus 2020 <br /> Rp. 200.000,-
+                </ion-item>
+                <ion-item>
+                    <ion-icon slot="start" name="ellipse-outline"></ion-icon>
+                    Jason : <br /> 11 Agustus 2020 - <br /> 20 Agustus 2020 <br /> Rp. 100.000,-
+                </ion-item>
+                <ion-item>
+                    <ion-icon slot="start" name="ellipse-outline"></ion-icon>
+                    Jason : <br /> 10 Agustus 2020 - <br /> 20 Agustus 2020 <br /> Rp. 20.000,-
+                </ion-item>
+                <ion-item>
+                    <ion-icon slot="start" name="ellipse-outline"></ion-icon>
+                    Grendi : <br /> 10 Agustus 2020 - <br /> 31 Agustus 2020 <br /> Rp. 200.000,-
+                </ion-item>
+                <ion-item>
+                    <ion-icon slot="start" name="ellipse-outline"></ion-icon>
+                    Vincent : <br /> 10 Agustus 2020 - <br /> 31 Agustus 2020 <br /> Rp. 1.000.000,-
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
 </ion-content>

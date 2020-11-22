@@ -9,6 +9,7 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
+
 /* Core CSS required for Ionic components to work properly */
 
 @import "~@ionic/angular/css/core.css";
@@ -27,23 +28,21 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
-
 ion-content {
-  // --background: url("/assets/img/financial.png") no-repeat center;
-  // --background-size: 100% 100%;
-  --ion-background-color: #a9d1b7;
-  
+    // --background: url("/assets/img/financial.png") no-repeat center;
+    // --background-size: 100% 100%;
+    --ion-background-color: #a9d1b7;
 }
 
 form {
-  --background-color: transparent;
+    --background-color: transparent;
 }
 
 ion-toolbar {
-  --background: var(--ion-color-header);
-  color: white;
+    --background: var(--ion-color-header);
+    color: white;
 }
 
 ion-button {
-  --border-radius: 30px;
+    --border-radius: 30px;
 }
