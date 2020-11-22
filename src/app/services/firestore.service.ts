@@ -46,9 +46,6 @@ export class FirestoreService {
     alamat: string,
     UID:string
   ) {
-    var virtualAccount  = "0885" + telepon+ "002";
-    var saldo = 0;
-    var role = "User";
     nama  = this.capitalizeWords(nama);
     tglLahir = format(new Date(tglLahir), "yyyy-MM-dd");
     var docRef = this.firestore.doc(`users/${UID}`);
