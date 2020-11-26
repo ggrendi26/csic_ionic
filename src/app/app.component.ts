@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
+import { FirestoreService } from './services/firestore.service';
 
 @Component({
   selector: 'app-root',
@@ -13,12 +14,16 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   userKey: string; 
+  userName: string; 
+  profile = null;
+  profileImageUrl = "";
   
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authSrv: AuthService,
+    private firestoreService: FirestoreService,
     private navCtrl: NavController,
     private router: Router
   ) {
@@ -34,6 +39,27 @@ export class AppComponent {
     this.authSrv.userDetails().subscribe(res => {
       if(res !== null){
         this.userKey = res.uid;
+
+        // get user details
+        this.firestoreService.getUserInfo(this.userKey).then((doc) => {
+          if(doc.exists){
+            // console.log(doc.data());
+            this.profile = doc.data();
+            this.userName = this.profile.nama;
+            // console.log(this.userName);
+            this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).then((res)=>{
+              this.profileImageUrl = res;
+              // console.log(res)
+            }).catch((error)=>{
+                console.log(error);
+            });
+          }else{
+            console.log('error getting document', doc)
+          }
+        }).catch(function (error){
+          console.log('error getting document', error)
+        });
+
       } else {
         this.userKey = '';
       }

@@ -15,14 +15,20 @@ import { PaymentService } from 'src/app/services/payment.service';
   styleUrls: ['./payment.page.scss'],
 })
 export class PaymentPage implements OnInit {
+
   sisaPembayaran: number;
-  user: any;
+  saldoUser: number;
+
   userEmail: string;
   userKey: string;
+
+  user: any;
   Allkategori: any;
   AllPayments: any;
+
   validations_form: FormGroup;
   errorMessage: string = '';
+
   kategori = [];
   paymentData = [];
   myDate: String = new Date().toISOString().substring(0, 10);
@@ -44,6 +50,7 @@ export class PaymentPage implements OnInit {
     private router: Router,
     private kategoriSrv: KategoriService,
     private paymentSrv: PaymentService,
+    private userSrv: FirestoreService,
     private alertController: AlertController,
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
@@ -116,7 +123,22 @@ export class PaymentPage implements OnInit {
         }
       }
     });
+
+    //get current user detail
+    this.userSrv.getUserInfo(this.userKey).then((doc) => {
+      if(doc.exists){
+        // console.log(doc.data());
+        this.user = doc.data();
+        this.saldoUser = this.user.saldo;
+        // console.log(this.saldoUser);
+      }else{
+        console.log('error getting document', doc)
+      }
+    }).catch(function (error){
+      console.log('error getting document', error)
+    });
   }
+
 
   async presentNoKategoriAlert() {
     const alert = await this.alertController.create({
@@ -139,43 +161,61 @@ export class PaymentPage implements OnInit {
   onSubmit(value){
     var maxKategori;
     var totalPaid = 0;
-    console.log(value.virtualacc);
+    // console.log(value.virtualacc);
 
-    // check virtual account valid / ga
-
-
-    // check lewatin max atau ga
-    for(var i = 0; i < this.kategori.length; i++){
-      if(this.kategori[i].nama === value.kategori){
-        maxKategori = this.kategori[i].max;
-        break;
-      }
-    }
-
-    if(this.paymentData.length == 0){
-      totalPaid = 0;
-    }else {
-      for(var i=0; i < this.paymentData.length; i++){
-        if(this.paymentData[i].kategori === value.kategori){
-          totalPaid = totalPaid + this.paymentData[i].totalpayment;
-        }else totalPaid = 0;
-      }
-    }
-
-    this.sisaPembayaran = maxKategori - totalPaid;
-    console.log("Sisa Pembayaran: " + maxKategori);
-    console.log("Sisa Pembayaran: " + this.sisaPembayaran);
-
-    if(this.sisaPembayaran < value.totalpayment){
-      this.presentTooMuchPaymentAlert();
+    // check saldo cukup atau ga 
+    if(value.totalpayment > this.saldoUser){
+      this.presentSaldoKurangAlert();
     }else{
-      this.paymentCheckerAlert(value.virtualacc, value.totalpayment, value.catatan, value);
+      // check virtual account valid / ga
+
+      // check lewatin max atau ga
+      for(var i = 0; i < this.kategori.length; i++){
+        if(this.kategori[i].nama === value.kategori){
+          maxKategori = this.kategori[i].max;
+          break;
+        }
+      }
+
+      if(this.paymentData.length == 0){
+        totalPaid = 0;
+      }else {
+        for(var i=0; i < this.paymentData.length; i++){
+          if(this.paymentData[i].kategori === value.kategori){
+            totalPaid = totalPaid + this.paymentData[i].totalpayment;
+          }else totalPaid = 0;
+        }
+      }
+
+      this.sisaPembayaran = maxKategori - totalPaid;
+      // console.log("Sisa Pembayaran: " + maxKategori);
+      // console.log("Sisa Pembayaran: " + this.sisaPembayaran);
+
+      if(this.sisaPembayaran < value.totalpayment){
+        this.presentTooMuchPaymentAlert();
+      }else{
+        this.paymentCheckerAlert(value.virtualacc, value.totalpayment, value.catatan, value);
+      }
     }
   }
 
   onCancel(){
     this.validations_form.reset();
     this.navCtrl.navigateBack('/index');
+  }
+
+  async presentSaldoKurangAlert(){
+    const alert = await this.alertController.create({
+      header: 'Saldo Tidak Mencukupi',
+      message: 'Mohon maaf salda anda tidak mencukupi. Silahkan melakukan TopUp terlebih dahulu.',
+      buttons: [
+        {
+          text: "TopUp",
+          handler: ()=> this.router.navigateByUrl('topup-user')
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async paymentCheckerAlert(virtualacc: string, totalpayment: number, catatan: string, value:any){
@@ -216,7 +256,10 @@ export class PaymentPage implements OnInit {
 
   submitData(value){
     this.paymentSrv.create(value).then(res => {
-      console.log(res);
+      // console.log(res);
+      var userCreditsNow = this.saldoUser - value.totalpayment;
+      this.userSrv.minUserCredits(userCreditsNow, this.userKey);
+      
       this.router.navigateByUrl('/index');
       this.validations_form.reset();
     }).catch(error => console.log(error));

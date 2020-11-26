@@ -95,4 +95,15 @@ export class FirestoreService {
       console.log(error);
     } 
    }
+
+   minUserCredits(currCredits: number, UID){
+    var docRef = this.firestore.doc(`users/${UID}`);
+    return docRef.ref.get().then((doc) => {
+      if (doc.exists) {
+        docRef.update({
+          saldo: currCredits
+        });        
+      }
+    }).catch(function(error) {});
+  }
 }

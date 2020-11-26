@@ -15,11 +15,10 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.authService.userDetails().subscribe(res => {
-      if(res !== null){
+      if(res === null){}
+      else {
         this.router.navigateByUrl('/index');
-      } else {
-        this.router.navigateByUrl('/login');
-      }
+      } 
     }, err => {
       console.log(err);
       // this.router.navigateByUrl('/login');
@@ -54,7 +53,8 @@ export class LoginPage implements OnInit {
         this.router.navigateByUrl('/index');
       }, err => {
         this.errorMessage = err.message;
-      })
+      });
+    this.validations_form.reset();
 
   }
   goToRegisterPage(){
