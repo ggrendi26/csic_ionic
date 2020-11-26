@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder,FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { KategoriService } from 'src/app/services/kategori.service';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-payment',
@@ -14,13 +15,16 @@ import { KategoriService } from 'src/app/services/kategori.service';
   styleUrls: ['./payment.page.scss'],
 })
 export class PaymentPage implements OnInit {
+  sisaPembayaran: number;
   user: any;
   userEmail: string;
   userKey: string;
   Allkategori: any;
+  AllPayments: any;
   validations_form: FormGroup;
   errorMessage: string = '';
   kategori = [];
+  paymentData = [];
   myDate: String = new Date().toISOString().substring(0, 10);
 
   validation_messages = {
@@ -39,15 +43,16 @@ export class PaymentPage implements OnInit {
     private authSrv: AuthService,
     private router: Router,
     private kategoriSrv: KategoriService,
+    private paymentSrv: PaymentService,
     private alertController: AlertController,
     private formBuilder: FormBuilder,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private toastController: ToastController
   ) {
   }
 
   ngOnInit() {
 
-    console.log(this.user);
     this.authSrv.userDetails().subscribe(res => {
       if(res !== null){
         this.userEmail = res.email;
@@ -96,6 +101,21 @@ export class PaymentPage implements OnInit {
         this.presentNoKategoriAlert();
       }
     });
+
+    this.paymentSrv.getAll().snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c => ({key: c.payload.key, ...c.payload.val()}))  
+      )
+    ).subscribe(data => {
+      this.AllPayments = data;
+      // console.log(this.userKey);
+      for(var i = 0; i < this.AllPayments.length; i++){
+        if(this.AllPayments[i].uid === this.userKey && this.AllPayments[i].paymentdate == this.myDate){
+          // console.log(this.Allkategori[i]);
+          this.paymentData.push(this.AllPayments[i]);
+        }
+      }
+    });
   }
 
   async presentNoKategoriAlert() {
@@ -118,8 +138,13 @@ export class PaymentPage implements OnInit {
 
   onSubmit(value){
     var maxKategori;
+    var totalPaid = 0;
     console.log(value.virtualacc);
 
+    // check virtual account valid / ga
+
+
+    // check lewatin max atau ga
     for(var i = 0; i < this.kategori.length; i++){
       if(this.kategori[i].nama === value.kategori){
         maxKategori = this.kategori[i].max;
@@ -127,12 +152,82 @@ export class PaymentPage implements OnInit {
       }
     }
 
-    // console.log(maxKategori);
+    if(this.paymentData.length == 0){
+      totalPaid = 0;
+    }else {
+      for(var i=0; i < this.paymentData.length; i++){
+        if(this.paymentData[i].kategori === value.kategori){
+          totalPaid = totalPaid + this.paymentData[i].totalpayment;
+        }else totalPaid = 0;
+      }
+    }
+
+    this.sisaPembayaran = maxKategori - totalPaid;
+    console.log("Sisa Pembayaran: " + maxKategori);
+    console.log("Sisa Pembayaran: " + this.sisaPembayaran);
+
+    if(this.sisaPembayaran < value.totalpayment){
+      this.presentTooMuchPaymentAlert();
+    }else{
+      this.paymentCheckerAlert(value.virtualacc, value.totalpayment, value.catatan, value);
+    }
   }
 
   onCancel(){
     this.validations_form.reset();
     this.navCtrl.navigateBack('/index');
   }
+
+  async paymentCheckerAlert(virtualacc: string, totalpayment: number, catatan: string, value:any){
+    const alert = await this.alertController.create({
+      header: 'Konfirmasi Pembayaran',
+      message: 'Nama: <br>No: ' +  virtualacc + '<br>Total: Rp. ' + totalpayment + ',-<br>Catatan: ' + catatan,
+      buttons: [
+        {
+          text: 'Bayar',
+          handler: ()=> this.submitData(value)
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async presentTooMuchPaymentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Pembayaran tidak bisa dilakukan!',
+      message: 'Sisa transaksi yang bisa anda lakukan hanya tersisa ' + this.sisaPembayaran + ' rupiah!',
+      buttons: [
+        {
+          text: 'Hemat saja',
+          handler: ()=> this.router.navigateByUrl('/index'),
+        },
+        {
+          text: 'Ganti Harga',
+          role: 'cancel'
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  submitData(value){
+    this.paymentSrv.create(value).then(res => {
+      console.log(res);
+      this.router.navigateByUrl('/index');
+      this.validations_form.reset();
+    }).catch(error => console.log(error));
+  }
    
+  async presentToast() {
+    const toast = await this.toastController.create({
+      color: 'success',
+      message: 'Pembayaran telah berhasil dilakukan.',
+      duration: 2000
+    });
+    toast.present();
+  }
 }
