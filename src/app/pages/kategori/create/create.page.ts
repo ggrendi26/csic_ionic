@@ -64,6 +64,7 @@ export class CreatePage implements OnInit {
   }
 
   goBack() {
+    this.validations_form.reset();
     this.navCtrl.navigateBack('/kategori');
   }
 
@@ -86,4 +87,5 @@ export class CreatePage implements OnInit {
     });
     toast.present();
   }
+  
 }

@@ -8,33 +8,63 @@
 </ion-header>
 
 <ion-content>
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+  <form [formGroup]="validations_form">
     <ion-list>
       <ion-item>
         <ion-label position="floating">Nomor Virtual Akun</ion-label>
-        <ion-input type="text" ngModel name="virtualacc"></ion-input>
+        <ion-input type="text" formControlName="virtualacc"></ion-input>
       </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.virtualacc">
+          <div class="error_message"
+            *ngIf="validations_form.get('virtualacc').hasError(validation.type) && (validations_form.get('virtualacc').dirty || validations_form.get('virtualacc').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
       <ion-item>
         <ion-label position="floating">Total Pembayaran</ion-label>
-        <ion-input type="text" ngModel name="totalpayment"></ion-input>
+        <ion-input type="number" formControlName="totalpayment"></ion-input>
       </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.totalpayment">
+          <div class="error_message"
+            *ngIf="validations_form.get('totalpayment').hasError(validation.type) && (validations_form.get('totalpayment').dirty || validations_form.get('totalpayment').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
       <ion-item>
         <ion-label position="floating">Jenis Kategori</ion-label>
-        <ion-select ngModel name="kategori" cancelText="Dismiss">
+        <ion-select formControlName="kategori" cancelText="Dismiss">
           <ion-select-option *ngFor="let k of kategori" value="{{ k.nama }}">{{ k.nama }}</ion-select-option>
         </ion-select>
       </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.kategori">
+          <div class="error_message"
+            *ngIf="validations_form.get('kategori').hasError(validation.type) && (validations_form.get('kategori').dirty || validations_form.get('kategori').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
       <ion-item>
         <ion-label position="floating">Catatan</ion-label>
-        <ion-textarea type="text" ngModel name="catatan"></ion-textarea>
+        <ion-input type="text" formControlName="catatan"></ion-input>
       </ion-item>
+      <ion-input type="text" formControlName="paymentdate" hidden value="{{ myDate }}"></ion-input>
+      <ion-input type="text" formControlName="targetid" hidden value=""></ion-input>
+      <ion-input type="text" formControlName="uid" hidden value="{{ userKey }}"></ion-input>
     </ion-list>
     <ion-row>
       <ion-col size-md="6" size-xs="6">
-        <ion-button type="submit" color="primary" expand="block">Bayar</ion-button>
+        <ion-button (click)="onSubmit(validations_form.value)" color="success" expand="block" [disabled]="!validations_form.valid">Bayar</ion-button>
       </ion-col>
       <ion-col size-md="6" size-xs="6">
-        <ion-button routerLink="/index" color="danger" expand="block">Cancel</ion-button>
+        <ion-button (click)="onCancel()" color="danger" expand="block">Cancel</ion-button>
       </ion-col>
     </ion-row>
   </form>
