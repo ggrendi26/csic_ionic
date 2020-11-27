@@ -44,7 +44,7 @@ export class RegisterPage implements OnInit {
       { type: 'required', message: 'Profile Picture is required.' },
     ]
   };
-
+  dataTest;
  
   constructor(
     private navCtrl: NavController,
@@ -54,7 +54,13 @@ export class RegisterPage implements OnInit {
     private firestoreService : FirestoreService,
     public loadingCtrl: LoadingController,
   ) {
-    
+    //Test firebase get all documents (Jason)
+   this.firestoreService.getAllDocuments().then((docs)=>{
+    this.dataTest = docs;
+    console.log(this.dataTest);
+   }).catch(function(error) {
+  });
+
    }
 
 
@@ -86,6 +92,7 @@ export class RegisterPage implements OnInit {
         Validators.required
       ])),
     });
+
 
   }
 

@@ -106,4 +106,20 @@ export class FirestoreService {
       }
     }).catch(function(error) {});
   }
+  getAllDocuments(){
+    var docRef = this.firestore.collection(`users`);
+    let datas;
+    return docRef.ref.get().then((doc) => {
+      let items = [];
+      doc.docs.map(a => {
+                const data = a.data();
+                const id = a.id;
+                items.push({ id, ...a.data() as {} })
+            })  
+      datas = items;
+      console.log(datas);
+      return datas;
+    }).catch(function(error) {
+    });
+  }
 }
