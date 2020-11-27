@@ -22,7 +22,9 @@ export class PaymentPage implements OnInit {
   userEmail: string;
   userKey: string;
 
-  user: any;
+  user: any; // current user
+  targetUser: any;
+  AllUser: any;
   Allkategori: any;
   AllPayments: any;
 
@@ -56,10 +58,14 @@ export class PaymentPage implements OnInit {
     private navCtrl: NavController,
     private toastController: ToastController
   ) {
+    this.userSrv.getAllDocuments().then((docs)=>{
+      this.AllUser = docs;
+      // console.log(this.AllUser);
+     }).catch(function(error) {
+    });
   }
 
   ngOnInit() {
-
     this.authSrv.userDetails().subscribe(res => {
       if(res !== null){
         this.userEmail = res.email;
@@ -91,6 +97,7 @@ export class PaymentPage implements OnInit {
   }
 
   ionViewDidEnter(){
+    this.kategori = [];
     this.kategoriSrv.getAll().snapshotChanges().pipe(
       map(changes => 
         changes.map(c => ({key: c.payload.key, ...c.payload.val()}))  
@@ -159,42 +166,57 @@ export class PaymentPage implements OnInit {
   }
 
   onSubmit(value){
+    this.targetUser = null;
     var maxKategori;
     var totalPaid = 0;
     // console.log(value.virtualacc);
-
-    // check saldo cukup atau ga 
-    if(value.totalpayment > this.saldoUser){
-      this.presentSaldoKurangAlert();
-    }else{
-      // check virtual account valid / ga
-
-      // check lewatin max atau ga
-      for(var i = 0; i < this.kategori.length; i++){
-        if(this.kategori[i].nama === value.kategori){
-          maxKategori = this.kategori[i].max;
-          break;
-        }
+    for(let u of this.AllUser){
+      if(u.virtualAccount === value.virtualacc){
+        this.targetUser = u;
+        break;
       }
-
-      if(this.paymentData.length == 0){
-        totalPaid = 0;
+    }
+    // check virtual account valid / ga
+    if(this.targetUser == null){
+      this.presentVANotValidAlert();
+    }else {
+      // check VA milik sendiri atau bukan
+      if(this.targetUser.virtualAccount === this.user.virtualAccount){
+        this.presentVACannotBeSameAlert();
       }else {
-        for(var i=0; i < this.paymentData.length; i++){
-          if(this.paymentData[i].kategori === value.kategori){
-            totalPaid = totalPaid + this.paymentData[i].totalpayment;
-          }else totalPaid = 0;
+      // check saldo cukup atau ga 
+        if(value.totalpayment > this.saldoUser){
+        this.presentSaldoKurangAlert();
+        }else{
+          // check lewatin max atau ga
+          for(var i = 0; i < this.kategori.length; i++){
+            if(this.kategori[i].nama === value.kategori){
+              maxKategori = this.kategori[i].max;
+              break;
+            }
+          }
+
+          if(this.paymentData.length == 0){
+            totalPaid = 0;
+          }else {
+            for(var i=0; i < this.paymentData.length; i++){
+              if(this.paymentData[i].kategori == value.kategori){
+                totalPaid = totalPaid + this.paymentData[i].totalpayment;
+              }
+            }
+          }
+
+          this.sisaPembayaran = maxKategori - totalPaid;
+          console.log("Total Semua: " + totalPaid);
+          console.log("Sisa Pembayaran: " + this.sisaPembayaran);
+          console.log("Maks Kategori: " + maxKategori);
+
+          if(this.sisaPembayaran < value.totalpayment){
+            this.presentTooMuchPaymentAlert();
+          }else{
+            this.paymentCheckerAlert(value.virtualacc, value.totalpayment, value.catatan, value);
+          }
         }
-      }
-
-      this.sisaPembayaran = maxKategori - totalPaid;
-      // console.log("Sisa Pembayaran: " + maxKategori);
-      // console.log("Sisa Pembayaran: " + this.sisaPembayaran);
-
-      if(this.sisaPembayaran < value.totalpayment){
-        this.presentTooMuchPaymentAlert();
-      }else{
-        this.paymentCheckerAlert(value.virtualacc, value.totalpayment, value.catatan, value);
       }
     }
   }
@@ -202,6 +224,20 @@ export class PaymentPage implements OnInit {
   onCancel(){
     this.validations_form.reset();
     this.navCtrl.navigateBack('/index');
+  }
+
+  async presentVACannotBeSameAlert(){
+    const alert = await this.alertController.create({
+      header: 'Virtual Account Tidak Valid',
+      message: 'Virtual Account yang Anda Input Tidak Bisa Sama dengan yang Anda Miliki. Silahkan Input Virtual Account yang Valid.',
+      buttons: [
+        {
+          text: "Cek Kembali",
+          role: 'cancel'
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async presentSaldoKurangAlert(){
@@ -218,10 +254,24 @@ export class PaymentPage implements OnInit {
     await alert.present();
   }
 
+  async presentVANotValidAlert(){
+    const alert = await this.alertController.create({
+      header: 'Virtual Account Tidak Terdaftar',
+      message: 'Virtual Account yang Anda Input tidak terdaftar. Silahkan Input Virtual Account yang Valid.',
+      buttons: [
+        {
+          text: "Cek Kembali",
+          role: 'cancel'
+        }
+      ]
+    });
+    await alert.present();
+  }
+
   async paymentCheckerAlert(virtualacc: string, totalpayment: number, catatan: string, value:any){
     const alert = await this.alertController.create({
       header: 'Konfirmasi Pembayaran',
-      message: 'Nama: <br>No: ' +  virtualacc + '<br>Total: Rp. ' + totalpayment + ',-<br>Catatan: ' + catatan,
+      message: 'Nama: '+ this.targetUser.nama + '<br>No: ' +  virtualacc + '<br>Total: Rp. ' + totalpayment + ',-<br>Catatan: ' + catatan,
       buttons: [
         {
           text: 'Bayar',
@@ -255,10 +305,13 @@ export class PaymentPage implements OnInit {
   }
 
   submitData(value){
+    value.targetid = this.targetUser.id;
     this.paymentSrv.create(value).then(res => {
       // console.log(res);
       var userCreditsNow = this.saldoUser - value.totalpayment;
-      this.userSrv.minUserCredits(userCreditsNow, this.userKey);
+      var targetCreditsNow = this.targetUser.saldo + value.totalpayment;
+      this.userSrv.updateUserCredits(userCreditsNow, this.userKey); // kurangin duit user
+      this.userSrv.updateUserCredits(targetCreditsNow, this.targetUser.id);// tambahin duit target
       
       this.router.navigateByUrl('/index');
       this.validations_form.reset();

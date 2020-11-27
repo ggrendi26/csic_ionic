@@ -96,7 +96,7 @@ export class FirestoreService {
     } 
    }
 
-   minUserCredits(currCredits: number, UID){
+   updateUserCredits(currCredits: number, UID){
     var docRef = this.firestore.doc(`users/${UID}`);
     return docRef.ref.get().then((doc) => {
       if (doc.exists) {
