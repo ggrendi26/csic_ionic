@@ -1,52 +1,51 @@
-<ion-menu *ngIf="userKey !== ''" side="start" menuId="userMenu">
+<ion-menu side="start" menuId="sideMenu">
   <ion-header>
     <ion-toolbar>
       <ion-title>Menu</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
+  <ion-content *ngIf="userRole == 'User'">
     <ion-list>
-      <ion-menu-toggle menu="userMenu">
+      <ion-menu-toggle menu="sideMenu">
         <br />
         <ion-item>
-          <ion-avatar>
-            <img
-              src="{{profileImageUrl}}"
-            /> </ion-avatar
+          <ion-avatar> <img src="{{ profileImageUrl }}" /> </ion-avatar
           >&nbsp;&nbsp;&nbsp;&nbsp;
           <ion-list>
             <ion-label>{{ userName }}</ion-label>
-            <ion-label color="primary" routerLink="/profile">Ubah Profil</ion-label>
+            <ion-label color="primary" routerLink="/profile"
+              >Ubah Profil</ion-label
+            >
           </ion-list>
         </ion-item>
       </ion-menu-toggle>
       <br />
-      <ion-menu-toggle menu="userMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/index">
           <ion-icon name="home-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Halaman Utama</ion-label>
         </ion-item>
       </ion-menu-toggle>
-      <ion-menu-toggle menu="userMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/kategori">
           <ion-icon name="pricetags-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Atur Kategori</ion-label>
         </ion-item>
       </ion-menu-toggle>
-      <ion-menu-toggle menu="userMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/history">
           <ion-icon name="timer-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Riwayat</ion-label>
         </ion-item>
       </ion-menu-toggle>
-      <ion-menu-toggle menu="userMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="about-us">
           <ion-icon name="people-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Tentang Kami</ion-label>
         </ion-item>
       </ion-menu-toggle>
       <ion-footer>
-        <ion-menu-toggle menu="userMenu">
+        <ion-menu-toggle menu="sideMenu">
           <ion-item lines="none" (click)="LogoutUser()">
             <ion-icon name="exit-outline"></ion-icon>&nbsp;&nbsp;
             <ion-label>Log Out</ion-label>
@@ -55,17 +54,10 @@
       </ion-footer>
     </ion-list>
   </ion-content>
-</ion-menu>
 
-<ion-menu side="end" menuId="adminMenu">
-  <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Admin Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
+  <ion-content *ngIf="userRole == 'Admin'">
     <ion-list>
-      <ion-menu-toggle menu="adminMenu">
+      <ion-menu-toggle menu="sideMenu">
         <br />
         <ion-item>
           <ion-avatar>
@@ -79,39 +71,39 @@
         </ion-item>
       </ion-menu-toggle>
       <br />
-      <ion-menu-toggle menu="adminMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/home-admin">
           <ion-icon name="home-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Home Admin</ion-label>
         </ion-item>
       </ion-menu-toggle>
-      <ion-menu-toggle menu="adminMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/topup-admin">
           <ion-icon name="add-circle"></ion-icon>&nbsp;&nbsp;
           <ion-label>Topup Admin</ion-label>
         </ion-item>
       </ion-menu-toggle>
-      <ion-menu-toggle menu="adminMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/data-pengguna-admin">
           <ion-icon name="people-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Data Pengguna</ion-label>
         </ion-item>
       </ion-menu-toggle>
-      <ion-menu-toggle menu="adminMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/log-lock-admin">
           <ion-icon name="lock-closed-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Log Lock Pengguna</ion-label>
         </ion-item>
       </ion-menu-toggle>
-      <ion-menu-toggle menu="adminMenu">
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/unlock-admin">
           <ion-icon name="lock-open-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Unlock User</ion-label>
         </ion-item>
       </ion-menu-toggle>
       <ion-footer>
-        <ion-menu-toggle menu="adminMenu">
-          <ion-item lines="none" routerLink=''>
+        <ion-menu-toggle menu="sideMenu">
+          <ion-item lines="none" routerLink="">
             <ion-icon name="exit-outline"></ion-icon>&nbsp;&nbsp;
             <ion-label>Log Out</ion-label>
           </ion-item>
