@@ -15,7 +15,6 @@ export class EditProfilePage implements OnInit {
   nama= "";
   tglLahir= "";
   alamat= "";
-  telepon= "";
   validations_form: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
@@ -40,10 +39,6 @@ export class EditProfilePage implements OnInit {
     ],
     'tglLahir': [
       { type: 'required', message: 'Tanggal Lahir is required.' },
-    ],
-    'telepon': [
-      { type: 'required', message: 'Nomor Telepon is required.' },
-      { type: 'pattern', message: 'Nomor Telepon is not valid.' },
     ],
     'alamat': [
       { type: 'required', message: 'Alamat is required.' },
@@ -73,11 +68,6 @@ export class EditProfilePage implements OnInit {
       tglLahir: new FormControl('', Validators.compose([
         Validators.required
       ])),
-      telepon: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern("^[0-9]*$"),
-        Validators.minLength(8),
-      ])),
       alamat: new FormControl('', Validators.compose([
         Validators.required
       ])),
@@ -96,7 +86,6 @@ export class EditProfilePage implements OnInit {
         this.nama = this.profile.nama;
         this.tglLahir= this.profile.tglLahir;
         this.alamat= this.profile.alamat;
-        this.telepon= this.profile.telepon;
         this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).then((res)=>{
           this.profileImageUrl = res;
           console.log(res)
@@ -120,7 +109,6 @@ export class EditProfilePage implements OnInit {
     this.firestoreService.updateProfile(
       value.nama,
       value.tglLahir,
-      value.telepon,
       value.alamat,
       this.fileExtension, this.uid).then(
         () => {

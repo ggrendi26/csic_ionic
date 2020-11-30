@@ -46,7 +46,6 @@ export class FirestoreService {
   updateProfile(
     nama: string,
     tglLahir: string,
-    telepon: string,
     alamat: string,
     extension,
     UID:string
@@ -65,7 +64,6 @@ export class FirestoreService {
           docRef.update({
             nama,
             tglLahir,
-            telepon,
             alamat,
             profileImageUrl
           });
@@ -73,7 +71,6 @@ export class FirestoreService {
           docRef.update({
             nama,
             tglLahir,
-            telepon,
             alamat,
           });
         }
