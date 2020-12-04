@@ -8,20 +8,50 @@
 </ion-header>
 
 <ion-content>
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+  <form
+    class="form"
+    [formGroup]="addTopUpAdmin"
+    (ngSubmit)="tryTopUp(addTopUpAdmin.value)"
+  >
     <ion-list>
       <ion-item>
         <ion-label position="floating">Nomor Virtual Account</ion-label>
-        <ion-input type="text" ngModel name="nama"></ion-input>
+        <ion-input
+          type="text"
+          ngModel
+          name="nomorVA"
+          formControlName="nomorVA"
+        ></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-label position="floating">Nama Akun</ion-label>
-        <ion-input type="text" ngModel name="nama"></ion-input>
-      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.nomorVA">
+          <div
+            class="error-message"
+            *ngIf="addTopUpAdmin.get('nomorVA').hasError(validation.type) && (addTopUpAdmin.get('nomorVA').dirty || addTopUpAdmin.get('nomorVA').touched)"
+          >
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
       <ion-item>
         <ion-label position="floating">Total TopUp</ion-label>
-        <ion-input type="text" ngModel name="max"></ion-input>
+        <ion-input
+          type="number"
+          ngModel
+          name="totalTopUp"
+          formControlName="totalTopUp"
+        ></ion-input>
       </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.totalTopUp">
+          <div
+            class="error-message"
+            *ngIf="addTopUpAdmin.get('totalTopUp').hasError(validation.type) && (addTopUpAdmin.get('totalTopUp').dirty || addTopUpAdmin.get('totalTopUp').touched)"
+          >
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
     </ion-list>
     <ion-row>
       <ion-col size-md="6" size-xs="6">
