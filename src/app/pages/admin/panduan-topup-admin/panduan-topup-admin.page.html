@@ -8,16 +8,50 @@
 </ion-header>
 
 <ion-content>
-  <form>
+  <form
+    class="form"
+    [formGroup]="addPanduanTopup"
+    (ngSubmit)="tryAddPanduanTopup(addPanduanTopup.value)"
+  >
     <ion-item>
       <ion-label position="floating" color="secondary">Nama Bank</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input type="text" formControlName="namaPanduan"></ion-input>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.namaPanduan">
+        <div
+          class="error-message"
+          *ngIf="addPanduanTopup.get('namaPanduan').hasError(validation.type) && (addPanduanTopup.get('namaPanduan').dirty || addPanduanTopup.get('namaPanduan').touched)"
+        >
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
     <ion-item>
       <ion-label position="floating" color="secondary"
         >Deskripsi Panduan</ion-label
       >
-      <ion-input type="text"></ion-input>
+      <ion-input type="text" formControlName="deskripsiPanduan"></ion-input>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container
+        *ngFor="let validation of validation_messages.deskripsiPanduan"
+      >
+        <div
+          class="error-message"
+          *ngIf="addPanduanTopup.get('deskripsiPanduan').hasError(validation.type) && (addPanduanTopup.get('deskripsiPanduan').dirty || addPanduanTopup.get('deskripsiPanduan').touched)"
+        >
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    <div class="mid">
+      <ion-button
+        class="submit-btn"
+        type="submit"
+        [disabled]="!addPanduanTopup.valid"
+        >Submit</ion-button
+      >
+    </div>
   </form>
 </ion-content>
