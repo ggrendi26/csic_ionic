@@ -51,7 +51,6 @@ export class AppComponent {
                 this.profile = doc.data();
                 this.userName = this.profile.nama;
                 this.userRole = this.profile.role;
-                // console.log(this.userName);
                 this.firestoreService
                   .getProfileImageUrl(this.profile.profileImageUrl)
                   .then((res) => {

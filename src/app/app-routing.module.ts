@@ -120,6 +120,10 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
   },
+  {
+    path: 'panduan-topup-admin',
+    loadChildren: () => import('./pages/admin/panduan-topup-admin/panduan-topup-admin.module').then( m => m.PanduanTopupAdminPageModule)
+  },
 
 ];
 

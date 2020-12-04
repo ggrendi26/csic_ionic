@@ -84,6 +84,13 @@
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle menu="sideMenu">
+        <ion-item lines="none" routerLink="/panduan-topup-admin">
+          <ion-icon name="add-circle"></ion-icon>&nbsp;&nbsp;
+          <ion-label>Panduan Topup Admin</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle menu="sideMenu">
         <ion-item lines="none" routerLink="/data-pengguna-admin">
           <ion-icon name="people-outline"></ion-icon>&nbsp;&nbsp;
           <ion-label>Data Pengguna</ion-label>
@@ -103,7 +110,7 @@
       </ion-menu-toggle>
       <ion-footer>
         <ion-menu-toggle menu="sideMenu">
-          <ion-item lines="none" routerLink="">
+          <ion-item lines="none" (click)="LogoutUser()">
             <ion-icon name="exit-outline"></ion-icon>&nbsp;&nbsp;
             <ion-label>Log Out</ion-label>
           </ion-item>
