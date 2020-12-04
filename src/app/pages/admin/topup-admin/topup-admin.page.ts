@@ -42,13 +42,6 @@ export class TopupAdminPage implements OnInit {
 
   async tryTopUp(value) {
     if (value) {
-      //   db.collection("cities").get().then(function(querySnapshot) {
-      //     querySnapshot.forEach(function(doc) {
-      //         doc.ref.update({
-      //             capital: true
-      //         });
-      //     });
-      // });
       this.firestore
         .collection("users", (ref) =>
           ref.where("virtualAccount", "==", value.nomorVA)

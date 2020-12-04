@@ -6,7 +6,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { LoadingController, NavController } from "@ionic/angular";
+import { LoadingController, NavController, ToastController } from "@ionic/angular";
 import { AuthService } from "../services/auth.service";
 import { FirestoreService } from "../services/firestore.service";
 import { AngularFirestore } from "@angular/fire/firestore";
@@ -29,7 +29,7 @@ export class LockUserPage implements OnInit {
 
   private nama: any;
   private user: any;
-  private currDate: String = new Date().toISOString().substr(0, 10);
+  private currDate: string = new Date().toISOString().substr(0, 10);
   constructor(
     private navCtrl: NavController,
     private authService: AuthService,
@@ -37,7 +37,8 @@ export class LockUserPage implements OnInit {
     private router: Router,
     private firestoreService: FirestoreService,
     public loadingCtrl: LoadingController,
-    public firestore: AngularFireAuth
+    public firestore: AngularFireAuth,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -57,10 +58,53 @@ export class LockUserPage implements OnInit {
     this.createLockForm = this.formBuilder.group({
       dateLock: new FormControl("", Validators.compose([Validators.required])),
       saldoLock: new FormControl("", Validators.compose([Validators.required])),
+      catatanLock: new FormControl("", Validators.compose([Validators.required])),
     });
   }
 
-  async requestLock() {
-    // const loading = await this.loadingCtrl.create();
+  async requestLock(value) {
+    const loading = await this.loadingCtrl.create();
+    console.log(value.dateLock);
+    console.log(value.saldoLock);
+    console.log(value.catatanLock);
+    
+    this.firestoreService
+      .createLockForm(value.dateLock, value.saldoLock, value.catatanLock, this.currDate, this.uid)
+      .then(
+        () => {
+          loading.dismiss().then(() => {
+            this.presentToast();
+            this.router.navigateByUrl("/index");
+          });
+        },
+        (error) => {
+          loading.dismiss().then(() => {
+            this.presentToastError();
+            console.error(error);
+          });
+        }
+      );
+
+    return await loading.present();
   }
+
+  async presentToast() {
+    let toast = this.toastCtrl.create({
+      message: "Lock balance success!",
+      duration: 2000,
+      position: "bottom",
+    });
+
+    (await toast).present();
+  }
+  async presentToastError() {
+    let toast = this.toastCtrl.create({
+      message: "Lock balance error!",
+      duration: 2000,
+      position: "bottom",
+    });
+
+    (await toast).present();
+  }
+  
 }

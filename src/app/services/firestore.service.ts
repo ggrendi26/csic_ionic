@@ -3,6 +3,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
 import "firebase/firestore";
 import { format } from "date-fns";
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
 @Injectable({
   providedIn: "root",
 })
@@ -126,13 +127,16 @@ export class FirestoreService {
     dateLock: string,
     saldoLock: string,
     catatanLock: string,
-    UID: string
+    dateStart: string,
+    uid:string,
   ) {
-    dateLock = format(new Date(dateLock), "yyyy-MM-dd");
-    return this.firestore.doc(`users/${UID}`).set({
-      dateLock,
-      saldoLock,
-      catatanLock,
+    // dateLock = format(new Date(dateLock), "yyyy-MM-dd");
+    return this.firestore.collection(`lock`).add({
+      dateLock: dateLock.toString().substr(0,10),
+      saldoLock: saldoLock,
+      catatanLock: catatanLock,
+      dateStart: dateStart,
+      uid: uid,
     });
   }
 
