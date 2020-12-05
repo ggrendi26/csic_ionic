@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from  "@angular/router";
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,10 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 export class LoginPage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private firestore:FirestoreService) { }
 
   ngOnInit() {
+
     this.authService.userDetails().subscribe(res => {
       if(res === null){}
       else {
@@ -48,9 +50,17 @@ export class LoginPage implements OnInit {
   loginUser(value){
     this.authService.loginUser(value)
       .then(res => {
-        console.log(res);
-        this.errorMessage = "";
-        this.router.navigateByUrl('/index');
+        this.firestore.isAdmin(res.user.uid).then((result) => {
+          this.errorMessage = "";
+          if(result == "Admin"){
+            this.router.navigateByUrl('/home-admin');
+          }else{
+            this.router.navigateByUrl('/index');
+          }
+         }).catch((err) => {
+          this.errorMessage = err.message;
+         });
+      
       }, err => {
         this.errorMessage = err.message;
       });

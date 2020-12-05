@@ -158,4 +158,33 @@ export class FirestoreService {
       })
       .catch(function (error) {});
   }
+  //
+  isAdmin(UID:string) {
+    let datas=[];
+    var docRef = this.firestore.doc(`users/${UID}`);
+    return docRef.ref
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        return doc.data()["role"];
+      }
+    })
+    .catch(function (error) {});
+  }
+  // isAdmin(UID:string) {
+  //   let datas=[];
+  //   var docRef = this.firestore.collection(`users`, (ref) =>
+  //   ref.where("role", "==", "Admin"));
+  //   return docRef.get().forEach(
+  //     (doc) => {
+  //      doc.forEach((data) =>{
+  //         datas.push(data.data());
+  //       });
+  //     })
+  //     .then(()=>{
+  //       return datas;
+  //       console.log(datas);
+  //     })
+  //     .catch(function (error) {});
+  // }
 }
