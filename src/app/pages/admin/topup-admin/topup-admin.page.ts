@@ -42,6 +42,13 @@ export class TopupAdminPage implements OnInit {
 
   async tryTopUp(value) {
     if (value) {
+      //   db.collection("cities").get().then(function(querySnapshot) {
+      //     querySnapshot.forEach(function(doc) {
+      //         doc.ref.update({
+      //             capital: true
+      //         });
+      //     });
+      // });
       this.firestore
         .collection("users", (ref) =>
           ref.where("virtualAccount", "==", value.nomorVA)
@@ -49,9 +56,10 @@ export class TopupAdminPage implements OnInit {
         .ref.get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
-            doc.ref.update({
-              saldo: doc.data()["saldo"] + value.totalTopUp,
-            });
+            if (doc.data()["virtualAccount"] == value.nomorVA)
+              doc.ref.update({
+                saldo: doc.data()["saldo"] + value.totalTopUp,
+              });
           });
         });
       this.presentToast();
