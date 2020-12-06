@@ -1,106 +1,95 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button menu="sideMenu"></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Halaman Utama</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button menu="sideMenu"></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Halaman Utama</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- saldo dan tombol lain -->
-  <ion-card color="secondary">
-    <ion-row>
-      <ion-col size-md="6" size-xs="6">
-        <ion-card color="light">
-          <ion-card-header>
-            <ion-card-subtitle>Saldo:</ion-card-subtitle>
-            Rp. {{ profile? profile.saldo: '' }},-
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-      <ion-col
-        size-md="2"
-        size-xs="2"
-        routerLink="/topup-user"
-        class="start-menu"
-      >
-        <ion-card-header>
-          <ion-icon name="add-circle"></ion-icon>
-        </ion-card-header>
-        <ion-card-subtitle>Topup</ion-card-subtitle>
-      </ion-col>
-      <ion-col size-md="2" size-xs="2" routerLink="/payment" class="start-menu">
-        <ion-card-header>
-          <ion-icon name="card"></ion-icon>
-        </ion-card-header>
-        <ion-card-subtitle>Bayar</ion-card-subtitle>
-      </ion-col>
-      <ion-col
-        size-md="2"
-        size-xs="2"
-        routerLink="/lock-user"
-        class="start-menu"
-      >
-        <ion-card-header>
-          <ion-icon name="lock-closed"></ion-icon>
-        </ion-card-header>
-        <ion-card-subtitle>Kunci</ion-card-subtitle>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <!-- end of saldo dan tombol lain -->
+    <!-- saldo dan tombol lain -->
+    <ion-card color="secondary">
+        <ion-row>
+            <ion-col size-md="6" size-xs="6">
+                <ion-card color="light">
+                    <ion-card-header>
+                        <ion-card-subtitle>Saldo:</ion-card-subtitle>
+                        Rp. {{ profile? profile.saldo: '' }},-
+                    </ion-card-header>
+                </ion-card>
+            </ion-col>
+            <ion-col size-md="2" size-xs="2" routerLink="/topup-user" class="start-menu">
+                <ion-card-header>
+                    <ion-icon name="add-circle"></ion-icon>
+                </ion-card-header>
+                <ion-card-subtitle>Topup</ion-card-subtitle>
+            </ion-col>
+            <ion-col size-md="2" size-xs="2" routerLink="/payment" class="start-menu">
+                <ion-card-header>
+                    <ion-icon name="card"></ion-icon>
+                </ion-card-header>
+                <ion-card-subtitle>Bayar</ion-card-subtitle>
+            </ion-col>
+            <ion-col size-md="2" size-xs="2" routerLink="/lock-user" class="start-menu">
+                <ion-card-header>
+                    <ion-icon name="lock-closed"></ion-icon>
+                </ion-card-header>
+                <ion-card-subtitle>Kunci</ion-card-subtitle>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+    <!-- end of saldo dan tombol lain -->
 
-  <!-- Pemasukan -->
-  <ion-card routerLink="/history">
-    <ion-card-header color="primary">
-      <ion-card-subtitle>Pemasukan</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content style="padding-top: 1%">
-      <ion-item *ngIf="LenIn == 0">Belum ada pemasukkan</ion-item>
-      <ion-list *ngFor="let in of inShow">
-        <ion-datetime value="{{ in.tanggalTopUp }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
-        <ion-item>
-          Saldo Bertambah Rp. {{ in.jumlahTopUp }},-
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-  <!-- end of pemasukan -->
+    <!-- Pemasukan -->
+    <ion-card routerLink="/history">
+        <ion-card-header color="primary">
+            <ion-card-subtitle>Pemasukan</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content style="padding-top: 1%">
+            <ion-item *ngIf="LenIn == 0">Belum ada pemasukkan</ion-item>
+            <ion-list *ngFor="let in of inShow">
+                <ion-datetime value="{{ in.tanggalTopUp }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
+                <ion-item>
+                    Saldo Bertambah Rp. {{ in.jumlahTopUp }},-
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+    <!-- end of pemasukan -->
 
-  <!-- pengeluaran -->
-  <ion-card routerLink="/history">
-    <ion-card-header color="danger">
-      <ion-card-subtitle>Pengeluaran</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content style="padding-top: 1%">
-      <ion-item *ngIf="LenOut == 0">Belum ada pengeluaran</ion-item>
-      <ion-list *ngFor="let out of outShow">
-        <ion-datetime value="{{ out.paymentdate }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
-        <ion-item>
-          Virtual Account: {{ out.virtualacc }} <br>
-          Nominal: Rp. {{ out.totalpayment }},-
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-  <!-- end of pengeluaran -->
+    <!-- pengeluaran -->
+    <ion-card routerLink="/history/history-pay">
+        <ion-card-header color="danger">
+            <ion-card-subtitle>Pengeluaran</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content style="padding-top: 1%">
+            <ion-item *ngIf="LenOut == 0">Belum ada pengeluaran</ion-item>
+            <ion-list *ngFor="let out of outShow">
+                <ion-datetime value="{{ out.paymentdate }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
+                <ion-item>
+                    Virtual Account: {{ out.virtualacc }} <br> Nominal: Rp. {{ out.totalpayment }},-
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+    <!-- end of pengeluaran -->
 
-  <!-- penguncian -->
-  <ion-card routerLink="/history">
-    <ion-card-header color="dark">
-      <ion-card-subtitle>Penguncian</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content style="padding-top: 1%">
-      <ion-item *ngIf="LenLock == 0">Belum ada penguncian</ion-item>
-      <ion-list *ngFor="let lock of lockShow">
-        <ion-item lines="none">
-          <ion-datetime value="{{ lock.dateLock }}" displayFormat="DD MMM YYYY"></ion-datetime> - &nbsp;
-          <ion-datetime value="{{ lock.dateStart }}" displayFormat="DD MMM YYYY"></ion-datetime>
-        </ion-item>
-        <ion-item>Nominal: Rp. {{ lock.saldoLock }},-</ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-  <!-- end of penguncian -->
+    <!-- penguncian -->
+    <ion-card routerLink="/history/history-lock">
+        <ion-card-header color="dark">
+            <ion-card-subtitle>Penguncian</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content style="padding-top: 1%">
+            <ion-item *ngIf="LenLock == 0">Belum ada penguncian</ion-item>
+            <ion-list *ngFor="let lock of lockShow">
+                <ion-item lines="none">
+                    <ion-datetime value="{{ lock.dateLock }}" displayFormat="DD MMM YYYY"></ion-datetime> - &nbsp;
+                    <ion-datetime value="{{ lock.dateStart }}" displayFormat="DD MMM YYYY"></ion-datetime>
+                </ion-item>
+                <ion-item>Nominal: Rp. {{ lock.saldoLock }},-</ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+    <!-- end of penguncian -->
 </ion-content>

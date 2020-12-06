@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { FirestoreService } from '../services/firestore.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { FirestoreService } from 'src/app/services/firestore.service';
 
 @Component({
-  selector: 'app-history',
-  templateUrl: './history.page.html',
-  styleUrls: ['./history.page.scss'],
+  selector: 'app-history-lock',
+  templateUrl: './history-lock.page.html',
+  styleUrls: ['./history-lock.page.scss'],
 })
-export class HistoryPage implements OnInit {
+export class HistoryLockPage implements OnInit {
   userEmail: string;
   userKey: string;
   datas=[];
@@ -25,7 +25,6 @@ export class HistoryPage implements OnInit {
     private router: Router,
     public firestore: AngularFirestore
     ) { }
-
   ngOnInit() {
     this.authSrv.userDetails().subscribe(res => {
       if(res !== null){
@@ -41,13 +40,12 @@ export class HistoryPage implements OnInit {
     });
   }
 
-  getDataHistoryTopup(){
-    this.firestoreService.getAllTopUpDatas().then((docs)=>{
-      this.inDatas = docs;
+  getDataHistoryLock(){
+    this.firestoreService.getAllLockDatas().then((docs)=>{
+      this.lockDatas = docs;
       // console.log(this.lockDatas);
      }).catch(function(error) {
     });
   }
-
 
 }
