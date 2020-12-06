@@ -10,6 +10,8 @@ import { LoadingController, NavController, ToastController } from "@ionic/angula
 import { AuthService } from "../services/auth.service";
 import { FirestoreService } from "../services/firestore.service";
 import { AngularFireAuth } from "@angular/fire/auth";
+import { isAfter } from 'date-fns'
+import * as moment from 'moment';
 
 @Component({
   selector: "app-lock-user",
@@ -25,12 +27,8 @@ export class LockUserPage implements OnInit {
     dateLock: [{ type: "required", message: "End date is required." }],
     saldoLock: [{ type: "required", message: "Balance is required." }],
   };
-
-  private nama: any;
-  private user: any;
   private currDate: string = new Date().toISOString().substr(0, 10);
   constructor(
-    private navCtrl: NavController,
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -106,4 +104,8 @@ export class LockUserPage implements OnInit {
     (await toast).present();
   }
   
+  setDate(getDate){
+    var check = moment(getDate).isAfter();
+    console.log(getDate, check);
+}
 }
