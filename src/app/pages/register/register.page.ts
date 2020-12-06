@@ -71,7 +71,7 @@ export class RegisterPage implements OnInit {
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])),
       password: new FormControl('', Validators.compose([
-        Validators.minLength(5),
+        Validators.minLength(6),
         Validators.required
       ])),
       nama: new FormControl('', Validators.compose([
@@ -129,6 +129,9 @@ export class RegisterPage implements OnInit {
         console.log(err);
         this.errorMessage = err.message;
         this.successMessage = "";
+        loading.dismiss().then(() => {
+          console.error(err);
+        });
       })
     return await loading.present();
 
