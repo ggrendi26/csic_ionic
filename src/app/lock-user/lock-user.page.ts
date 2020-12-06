@@ -9,7 +9,6 @@ import { Router } from "@angular/router";
 import { LoadingController, NavController, ToastController } from "@ionic/angular";
 import { AuthService } from "../services/auth.service";
 import { FirestoreService } from "../services/firestore.service";
-import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireAuth } from "@angular/fire/auth";
 
 @Component({

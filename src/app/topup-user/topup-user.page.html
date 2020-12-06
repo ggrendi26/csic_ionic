@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="home"></ion-back-button>
+            <ion-back-button defaultHref="/index"></ion-back-button>
         </ion-buttons>
         <ion-title>
             Panduan Tambah Saldo
@@ -10,24 +10,31 @@
     </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
-    <ion-list>
-        <ion-item color="dark">
-            <ion-label>
-                Bank BCA
-            </ion-label>
-        </ion-item>
+    <!-- <ion-list>
+        <ion-card-header type="button" (click)="showDetails = !showDetails;">
+            <ion-item color="dark" *ngFor="let item of panduan">
+                <ion-label *ngIf="showDetails">
+                    {{ item.namaPanduan}}
+                </ion-label>
+                <ion-card-subtitle>
+                    {{ item.deskripsiPanduan }}
+                </ion-card-subtitle>
+            </ion-item>
+        </ion-card-header>
 
-        <ion-item color="dark">
-            <ion-label>
-                Bank Mandiri
-            </ion-label>
-        </ion-item>
+    </ion-list> -->
+    <ion-card color="light" *ngFor="let item of panduan; let i = index;">
+        <ion-card-header type="button" (click)="toggleView(item)">
+            <ion-icon name="arrow-down"></ion-icon>
+            {{item.namaPanduan}}
+        </ion-card-header>
+        <ion-card-content *ngIf="item.showDetails">
+            <ion-list>
+                <p>{{item.deskripsiPanduan}}</p>
+            </ion-list>
 
-        <ion-item color="dark">
-            <ion-label>
-                Bank OCBC
-            </ion-label>
-        </ion-item>
-    </ion-list>
+        </ion-card-content>
+    </ion-card>
 </ion-content>

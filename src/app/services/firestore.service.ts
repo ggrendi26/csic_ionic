@@ -123,6 +123,25 @@ export class FirestoreService {
     });
   }
 
+  getPanduanTopup(){
+    var docRef = this.firestore.collection(`panduanTopUp`);
+    let datas;
+    return docRef.ref
+      .get()
+      .then((doc) => {
+        let items = [];
+        doc.docs.map((a) => {
+          const data = a.data();
+          const id = a.id;
+          items.push({ id, ...(a.data() as {}) });
+        });
+        datas = items;
+        console.log(datas);
+        return datas;
+      })
+      .catch(function (error) {});
+  }
+
   createLockForm(
     dateLock: string,
     saldoLock: string,
