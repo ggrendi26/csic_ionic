@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
+import { PaymentService } from 'src/app/services/payment.service';
 
 @Component({
   selector: 'app-index-user',
@@ -16,10 +18,28 @@ export class IndexUserPage implements OnInit {
   userEmail: string;
   userKey: string;
 
+  // untuk length topup (in), payment (out), lock (lock)
+  in = [];
+  out = [];
+  lock = [];
+
+  inDatas: any;
+  outDatas: any;
+  lockDatas: any;
+
+  inShow = [];
+  outShow = [];
+  lockShow = [];
+
+  LenOut = 0;
+  LenIn = 0;
+  LenLock = 0;
+
   constructor(
     private authSrv: AuthService,
     private router: Router,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private paymentSrv: PaymentService
   ) { }
 
   ngOnInit() {
@@ -38,6 +58,13 @@ export class IndexUserPage implements OnInit {
   }
 
   ionViewDidEnter(){
+    this.in = [];
+    this.out = [];
+    this.lock = [];
+    this.inShow = [];
+    this.outShow = [];
+    this.lockShow = [];
+    
     this.firestoreService.getUserInfo(this.userKey).then((doc) => {
       if(doc.exists){
         // console.log(doc.data());
@@ -54,5 +81,70 @@ export class IndexUserPage implements OnInit {
     }).catch(function (error){
       console.log('error getting document', error)
     });
+
+    // pengeluaran (out)
+    this.paymentSrv.getAll().snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c => ({key: c.payload.key, ...c.payload.val()}))  
+      )
+    ).subscribe(data => {
+      this.outDatas = data;
+      for(var i = 0; i < this.outDatas.length; i++){
+        if(this.outDatas[i].uid === this.userKey){
+          this.out.push(this.outDatas[i]);
+        }
+      }
+      if(this.out.length >= 3){ 
+        for(var i = 0; i < 3; i++){
+          this.outShow.push(this.out[i]);
+        }
+      }else{
+        this.outShow = this.out;
+      }
+      this.LenOut = this.outShow.length;
+    });
+
+    // Penguncian (lock)
+    this.firestoreService.getAllLockDatas().then((docs)=>{
+      this.lockDatas = docs;
+      // console.log(this.lockDatas);
+     }).catch(function(error) {
+    });
+    for(let u of this.lockDatas){
+      if(u.uid === this.userKey){
+        this.lock.push(u);
+      }
+    }
+    if(this.lock.length >= 3){
+      for(var i = 0; i < 3; i++){
+        this.lockShow.push(this.lock[i]);
+      }
+    }else {
+      this.lockShow = this.lock;
+    }
+
+    this.LenLock = this.lockShow.length;
+
+    // Pemasukan (in)
+    this.firestoreService.getAllTopUpDatas().then((docs)=>{
+      this.inDatas = docs;
+      // console.log(this.lockDatas);
+     }).catch(function(error) {
+    });
+    for(let u of this.inDatas){
+      if(u.uid === this.userKey){
+        this.in.push(u);
+      }
+    }
+    if(this.in.length >= 3){
+      for(var i = 0; i < 3; i++){
+        this.lockShow.push(this.in[i]);
+      }
+    }else {
+      this.inShow = this.in;
+    }
+    
+    this.LenIn = this.inShow.length;
+
   }
 }

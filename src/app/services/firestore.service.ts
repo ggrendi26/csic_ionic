@@ -180,6 +180,44 @@ export class FirestoreService {
       })
       .catch(function (error) {});
   }
+
+  getAllLockDatas() {
+    var docRef = this.firestore.collection(`lock`);
+    let datas;
+    return docRef.ref
+      .get()
+      .then((doc) => {
+        let items = [];
+        doc.docs.map((a) => {
+          const data = a.data();
+          const id = a.id;
+          items.push({ id, ...(a.data() as {}) });
+        });
+        datas = items;
+        // console.log(datas);
+        return datas;
+      })
+      .catch(function (error) {});
+  }
+
+  getAllTopUpDatas() {
+    var docRef = this.firestore.collection(`LogTopUp`);
+    let datas;
+    return docRef.ref
+      .get()
+      .then((doc) => {
+        let items = [];
+        doc.docs.map((a) => {
+          const data = a.data();
+          const id = a.id;
+          items.push({ id, ...(a.data() as {}) });
+        });
+        datas = items;
+        // console.log(datas);
+        return datas;
+      })
+      .catch(function (error) {});
+  }
   //
   isAdmin(UID: string) {
     let datas = [];

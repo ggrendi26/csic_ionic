@@ -57,18 +57,11 @@
       <ion-card-subtitle>Pemasukan</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content style="padding-top: 1%">
-      <ion-list>
+      <ion-item *ngIf="LenIn == 0">Belum ada pemasukkan</ion-item>
+      <ion-list *ngFor="let in of inShow">
+        <ion-datetime value="{{ in.tanggalTopUp }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
         <ion-item>
-          Thursday, 11 May 2020 <br />
-          Saldo Bertambah Rp. 100.000,-
-        </ion-item>
-        <ion-item>
-          Wednesday, 10 May 2020 <br />
-          Saldo Bertambah Rp. 100.000,-
-        </ion-item>
-        <ion-item>
-          Tuesday, 9 May 2020 <br />
-          Saldo Bertambah Rp. 650.000,-
+          Saldo Bertambah Rp. {{ in.jumlahTopUp }},-
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -81,18 +74,12 @@
       <ion-card-subtitle>Pengeluaran</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content style="padding-top: 1%">
-      <ion-list>
+      <ion-item *ngIf="LenOut == 0">Belum ada pengeluaran</ion-item>
+      <ion-list *ngFor="let out of outShow">
+        <ion-datetime value="{{ out.paymentdate }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
         <ion-item>
-          Thursday, 11 May 2020 <br />
-          Rekening A: Rp. 100.000,-
-        </ion-item>
-        <ion-item>
-          Wednesday, 10 May 2020 <br />
-          Rekening B: Rp. 100.000,-
-        </ion-item>
-        <ion-item>
-          Tuesday, 9 May 2020 <br />
-          Rekening C: Rp. 650.000,-
+          Virtual Account: {{ out.virtualacc }} <br>
+          Nominal: Rp. {{ out.totalpayment }},-
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -105,19 +92,13 @@
       <ion-card-subtitle>Penguncian</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content style="padding-top: 1%">
-      <ion-list>
-        <ion-item>
-          03 May 2020 - 11 May 2020 <br />
-          Rp. 100.000,-
+      <ion-item *ngIf="LenLock == 0">Belum ada penguncian</ion-item>
+      <ion-list *ngFor="let lock of lockShow">
+        <ion-item lines="none">
+          <ion-datetime value="{{ lock.dateLock }}" displayFormat="DD MMM YYYY"></ion-datetime> - &nbsp;
+          <ion-datetime value="{{ lock.dateStart }}" displayFormat="DD MMM YYYY"></ion-datetime>
         </ion-item>
-        <ion-item>
-          02 May 2020 - 11 May 2020 <br />
-          Rp. 100.000,-
-        </ion-item>
-        <ion-item>
-          01 May 2020 - 11 May 2020 <br />
-          Rp. 100.000,-
-        </ion-item>
+        <ion-item>Nominal: Rp. {{ lock.saldoLock }},-</ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
