@@ -3,11 +3,12 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
 import "firebase/firestore";
 import { format } from "date-fns";
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import { Timestamp } from "rxjs/internal/operators/timestamp";
 @Injectable({
   providedIn: "root",
 })
 export class FirestoreService {
+  private currDate: string = new Date().toISOString().substr(0, 10);
   constructor(
     public firestore: AngularFirestore,
     private storage: AngularFireStorage
@@ -25,6 +26,7 @@ export class FirestoreService {
     var virtualAccount = "0885" + telepon + "002";
     var profileImageUrl = UID + "." + extension;
     var saldo = 0;
+    var dateJoined = this.currDate;
     var role = "User";
     nama = this.capitalizeWords(nama);
     tglLahir = format(new Date(tglLahir), "yyyy-MM-dd");
@@ -36,6 +38,7 @@ export class FirestoreService {
       alamat,
       virtualAccount,
       saldo,
+      dateJoined,
       role,
       profileImageUrl,
     });
@@ -123,7 +126,7 @@ export class FirestoreService {
     });
   }
 
-  getPanduanTopup(){
+  getPanduanTopup() {
     var docRef = this.firestore.collection(`panduanTopUp`);
     let datas;
     return docRef.ref
@@ -147,11 +150,11 @@ export class FirestoreService {
     saldoLock: string,
     catatanLock: string,
     dateStart: string,
-    uid:string,
+    uid: string
   ) {
     // dateLock = format(new Date(dateLock), "yyyy-MM-dd");
     return this.firestore.collection(`lock`).add({
-      dateLock: dateLock.toString().substr(0,10),
+      dateLock: dateLock.toString().substr(0, 10),
       saldoLock: saldoLock,
       catatanLock: catatanLock,
       dateStart: dateStart,
@@ -172,23 +175,23 @@ export class FirestoreService {
           items.push({ id, ...(a.data() as {}) });
         });
         datas = items;
-        console.log(datas);
+        // console.log(datas);
         return datas;
       })
       .catch(function (error) {});
   }
   //
-  isAdmin(UID:string) {
-    let datas=[];
+  isAdmin(UID: string) {
+    let datas = [];
     var docRef = this.firestore.doc(`users/${UID}`);
     return docRef.ref
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        return doc.data()["role"];
-      }
-    })
-    .catch(function (error) {});
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          return doc.data()["role"];
+        }
+      })
+      .catch(function (error) {});
   }
   // isAdmin(UID:string) {
   //   let datas=[];

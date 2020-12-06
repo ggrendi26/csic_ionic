@@ -96,35 +96,38 @@ const routes: Routes = [
       ),
   },
   {
-    path: "history-admin",
-    loadChildren: () =>
-      import("./pages/admin/history-admin/history-admin.module").then(
-        (m) => m.HistoryAdminPageModule
-      ),
-  },
-  {
     path: "log-lock-admin",
     loadChildren: () =>
       import("./pages/admin/log-lock-admin/log-lock-admin.module").then(
         (m) => m.LogLockAdminPageModule
       ),
-  },  {
-    path: 'data-pengguna-admin',
-    loadChildren: () => import('./pages/admin/data-pengguna-admin/data-pengguna-admin.module').then( m => m.DataPenggunaAdminPageModule)
   },
   {
-    path: 'unlock-admin',
-    loadChildren: () => import('./pages/admin/unlock-admin/unlock-admin.module').then( m => m.UnlockAdminPageModule)
+    path: "data-pengguna-admin",
+    loadChildren: () =>
+      import(
+        "./pages/admin/data-pengguna-admin/data-pengguna-admin.module"
+      ).then((m) => m.DataPenggunaAdminPageModule),
   },
   {
-    path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+    path: "unlock-admin",
+    loadChildren: () =>
+      import("./pages/admin/unlock-admin/unlock-admin.module").then(
+        (m) => m.UnlockAdminPageModule
+      ),
   },
   {
-    path: 'panduan-topup-admin',
-    loadChildren: () => import('./pages/admin/panduan-topup-admin/panduan-topup-admin.module').then( m => m.PanduanTopupAdminPageModule)
+    path: "profile",
+    loadChildren: () =>
+      import("./pages/profile/profile.module").then((m) => m.ProfilePageModule),
   },
-
+  {
+    path: "panduan-topup-admin",
+    loadChildren: () =>
+      import(
+        "./pages/admin/panduan-topup-admin/panduan-topup-admin.module"
+      ).then((m) => m.PanduanTopupAdminPageModule),
+  },
 ];
 
 @NgModule({

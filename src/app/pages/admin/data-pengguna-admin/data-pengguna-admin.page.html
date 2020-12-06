@@ -51,35 +51,14 @@
     <ion-card-header color="success">
       <ion-card-subtitle>Data Pengguna</ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content style="padding-top: 1%">
+    <ion-card-content style="padding-top: 1%" *ngFor="let user of allUser; ">
       <ion-list>
         <ion-item>
           <ion-avatar>
             <ion-icon name="person-circle"></ion-icon>
           </ion-avatar>
-          Jason <br />
-          Tergabung sejak 10 Agustus 2020
-        </ion-item>
-        <ion-item>
-          <ion-avatar>
-            <ion-icon name="person-circle"></ion-icon>
-          </ion-avatar>
-          Lucky <br />
-          Tergabung sejak 10 Agustus 2020
-        </ion-item>
-        <ion-item>
-          <ion-avatar>
-            <ion-icon name="person-circle"></ion-icon>
-          </ion-avatar>
-          Grendi <br />
-          Tergabung sejak 10 Agustus 2020
-        </ion-item>
-        <ion-item>
-          <ion-avatar>
-            <ion-icon name="person-circle"></ion-icon>
-          </ion-avatar>
-          Vincent <br />
-          Tergabung sejak 10 Agustus 2020
+          {{user.nama}} <br />
+          Tergabung sejak {{user.dateJoined}}
         </ion-item>
       </ion-list>
     </ion-card-content>
