@@ -51,7 +51,7 @@ export class DataPenggunaAdminPage implements OnInit {
     if (!this.startDate || !this.endDate) {
       return;
     }
-    if (isBefore(this.endDate, this.startDate)) {
+    if (isBefore(new Date(this.endDate), new Date(this.startDate))) {
       this.presentToastError();
       this.allUser = this.backupUser;
       this.invalidSelection = true;
@@ -59,7 +59,7 @@ export class DataPenggunaAdminPage implements OnInit {
 
     const startDate = new Date(this.startDate);
     const endDate = new Date(this.endDate);
-    this.allUser = this.allUser.filter((item) => {
+    this.allUser = this.backupUser.filter((item) => {
       return isWithinInterval(new Date(item.dateJoined), {
         start: startDate,
         end: endDate,
