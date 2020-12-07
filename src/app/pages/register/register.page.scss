@@ -15,6 +15,7 @@ ion-button{
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin-top: 60px;
 }
 
 .img-mid {
@@ -27,4 +28,8 @@ ion-button{
 
 .error-message{
     color:red;
+}
+
+.img-preview{
+    justify-content: center;
 }

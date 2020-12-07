@@ -87,14 +87,31 @@
         </div>
       </ng-container>
     </div>
-    <ion-item>
-      <ion-label id="profile_image" color="primary" stacked>Profile Image</ion-label>
-      <!-- <ion-input type="file" accept="image/*" id="upload" formControlName="profilePic" [(ngModel)]="imageFilePath" (ionChange)="changelistener($event)"></ion-input> -->
-      <input type="file" formControlName="profilePic" [(ngModel)]="imageFilePath" (change)="changelistener($event)">
-    </ion-item>
+
+    <ion-grid horizontal="center">
+      <ion-row class="img-preview">
+      <ion-col size="6" 
+        *ngFor="let photo of photoService.photos; index as position">
+          <ion-img [src]="photo.webviewPath"></ion-img>
+      </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="validation-errors" *ngIf="photoService.photos.length == 0">
+      <ng-container >
+        <div class="error-message">
+          Profile Picture is required
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-fab  horizontal="center" slot="fixed">
+      <ion-fab-button (click)="addPhotoToGallery()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 
     <div class="mid">
-      <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid">Register</ion-button>
+      <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid && photoService.photoBase64 === ''">Register</ion-button>
     </div>  
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>

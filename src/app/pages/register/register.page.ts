@@ -4,6 +4,7 @@ import { Router } from  "@angular/router";
 import { LoadingController, NavController } from '@ionic/angular';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { AuthService } from '../../services/auth.service';
+import { PhotoService } from '../../services/photo.service';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterPage implements OnInit {
   imageFilePath = '';
   file: File;
-  fileExtension = '';
+  fileExtension = 'png';
   validations_form: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
@@ -40,9 +41,6 @@ export class RegisterPage implements OnInit {
     'alamat': [
       { type: 'required', message: 'Alamat is required.' },
     ],
-    'profilePic': [
-      { type: 'required', message: 'Profile Picture is required.' },
-    ]
   };
   dataTest;
  
@@ -53,13 +51,8 @@ export class RegisterPage implements OnInit {
     private  router:  Router,
     private firestoreService : FirestoreService,
     public loadingCtrl: LoadingController,
+    public photoService: PhotoService
   ) {
-    //Test firebase get all documents (Jason)
-   this.firestoreService.getAllDocuments().then((docs)=>{
-    this.dataTest = docs;
-    console.log(this.dataTest);
-   }).catch(function(error) {
-  });
 
    }
 
@@ -88,12 +81,7 @@ export class RegisterPage implements OnInit {
       alamat: new FormControl('', Validators.compose([
         Validators.required
       ])),
-      profilePic: new FormControl('', Validators.compose([
-        Validators.required
-      ])),
     });
-
-
   }
 
   async tryRegister(value) {
@@ -102,8 +90,6 @@ export class RegisterPage implements OnInit {
    
     this.authService.registerUser(value)
       .then(res => {
-        // console.log("disini");
-        // console.log(res);
         this.errorMessage = "";
         this.successMessage = "Your account has been created. Please log in.";
         this.uploadProfileImage(res.user.uid);
@@ -136,7 +122,6 @@ export class RegisterPage implements OnInit {
     return await loading.present();
 
   }
-
   goLoginPage() {
     this.navCtrl.navigateBack('');
   }
@@ -148,15 +133,12 @@ export class RegisterPage implements OnInit {
   }
 
   uploadProfileImage(uid:string){
-    console.log("uploadProfileImage");
-    this.firestoreService.uploadProfileImage(this.file, this.fileExtension,uid);
-    // let fileRef = firebase.storage().ref('profileImages/' + this.uid + ".jpg");
-    // fileRef.put(this.file).then(function(snapshot) {
-    //   console.log('Uploaded a blob or file!');
-    // });
+    this.firestoreService.uploadProfileImage(this.photoService.photoBase64, this.fileExtension,uid);
   }
   getFileExtension(filename){
     return filename.split('.').pop();
-
+  }
+  addPhotoToGallery() {
+    this.photoService.addNewToGallery();
   }
 }

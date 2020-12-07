@@ -88,11 +88,13 @@ export class FirestoreService {
       })
       .catch(function (error) {});
   }
-  uploadProfileImage(profileImage: File, extension, uid: string) {
+  uploadProfileImage(profileImage: string, extension, uid: string) {
     const file = profileImage;
     const filePath = "profileImage/" + uid + "." + extension;
     const ref = this.storage.ref(filePath);
-    const task = ref.put(file);
+    const task = ref.putString(profileImage, 'base64').then(function(snapshot) {
+      console.log('Uploaded a base64 string!');
+      });
   }
   getProfileImageUrl(uid) {
     try {
