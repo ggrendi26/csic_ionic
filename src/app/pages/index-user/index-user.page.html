@@ -84,8 +84,8 @@
             <ion-item *ngIf="LenLock == 0">Belum ada penguncian</ion-item>
             <ion-list *ngFor="let lock of lockShow">
                 <ion-item lines="none">
-                    <ion-datetime value="{{ lock.dateLock }}" displayFormat="DD MMM YYYY"></ion-datetime> - &nbsp;
-                    <ion-datetime value="{{ lock.dateStart }}" displayFormat="DD MMM YYYY"></ion-datetime>
+                    <ion-datetime value="{{ lock.dateStart }}" displayFormat="DD MMM YYYY"></ion-datetime> - &nbsp;
+                    <ion-datetime value="{{ lock.dateLock }}" displayFormat="DD MMM YYYY"></ion-datetime>
                 </ion-item>
                 <ion-item>Nominal: Rp. {{ lock.saldoLock }},-</ion-item>
             </ion-list>
