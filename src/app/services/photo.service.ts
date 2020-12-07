@@ -11,6 +11,7 @@ import { Photo } from '../models/photo';
 export class PhotoService {
   public photos: Photo[] = [];
   public photoBase64 = '';
+  public photoUrl = "";
   public async addNewToGallery() {
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({
@@ -25,6 +26,7 @@ export class PhotoService {
       webviewPath: capturedPhoto.webPath
     });
     this.getBase64Picture(capturedPhoto).then((result) => {
+      this.photoUrl = result;
       this.photoBase64 = result.replace("data:image/png;base64,", "")
     }).catch((err) => {
       

@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from  "@angular/router";
 import { LoadingController, NavController } from '@ionic/angular';
 import { FirestoreService } from 'src/app/services/firestore.service';
+import { PhotoService } from 'src/app/services/photo.service';
 import { AuthService } from '../../../services/auth.service';
 @Component({
   selector: 'app-edit-profile',
@@ -20,7 +21,7 @@ export class EditProfilePage implements OnInit {
   successMessage: string = '';
   imageFilePath ='';
   file: File;
-  fileExtension = '';
+  fileExtension = 'png';
   profileImageUrl;
   constructor(
     private navCtrl: NavController,
@@ -29,6 +30,7 @@ export class EditProfilePage implements OnInit {
     private  router:  Router,
     private firestoreService : FirestoreService,
     public loadingCtrl: LoadingController,
+    public photoService: PhotoService
   ) { }
 
 
@@ -71,14 +73,11 @@ export class EditProfilePage implements OnInit {
       alamat: new FormControl('', Validators.compose([
         Validators.required
       ])),
-      profilePic: new FormControl('', Validators.compose([
-      ])),
     });
 
   }
  
   getUserInfo(){
-    console.log(this.uid);
     this.firestoreService.getUserInfo(this.uid).then((doc) => {
       if(doc.exists){
         console.log(doc.data());
@@ -87,8 +86,8 @@ export class EditProfilePage implements OnInit {
         this.tglLahir= this.profile.tglLahir;
         this.alamat= this.profile.alamat;
         this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).then((res)=>{
-          this.profileImageUrl = res;
-          console.log(res)
+          this.profileImageUrl =  res;
+          this.photoService.photoUrl = res;
         }).catch((error)=>{
             console.log(error);
         });
@@ -99,10 +98,11 @@ export class EditProfilePage implements OnInit {
     console.log('error getting document', error)
   });
   }
+
   async editProfile(value) {
     // console.log(value);
     const loading = await this.loadingCtrl.create();
-    if(this.fileExtension){
+    if(this.photoService.photoBase64 != ""){
       this.uploadProfileImage();
     }
    
@@ -132,29 +132,14 @@ export class EditProfilePage implements OnInit {
   goLoginPage() {
     this.navCtrl.navigateBack('');
   }
-  changelistener(event) : void {
-    console.log("masuk changelistener");
-    console.log(event.target.files[0].name);
-    if(event.target.files[0]){
-      this.fileExtension = this.getFileExtension(event.target.files[0].name);
-      this.file = event.target.files[0];
-      const reader = new FileReader();
-        reader.readAsDataURL(this.file);
-        reader.onload = event => {
-          console.log(reader.result)
-          this.profileImageUrl = reader.result;
-        };
-    }
-   
-  }
-
+  
   uploadProfileImage(){
-    console.log("uploadProfileImage");
-    this.firestoreService.uploadProfileImage(this.file, this.fileExtension, this.uid);
+    console.log(this.photoService.photoBase64);
+    this.firestoreService.uploadProfileImage(this.photoService.photoBase64, this.fileExtension, this.uid);
   }
-  getFileExtension(filename){
-    return filename.split('.').pop();
 
+  addPhotoToGallery() {
+    this.photoService.addNewToGallery();
   }
 }
 

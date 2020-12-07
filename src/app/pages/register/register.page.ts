@@ -125,12 +125,6 @@ export class RegisterPage implements OnInit {
   goLoginPage() {
     this.navCtrl.navigateBack('');
   }
-  changelistener(event) : void {
-    console.log("masuk changelistener");
-    console.log(event.target.files[0].name);
-    this.fileExtension = this.getFileExtension(event.target.files[0].name);
-    this.file = event.target.files[0];
-  }
 
   uploadProfileImage(uid:string){
     this.firestoreService.uploadProfileImage(this.photoService.photoBase64, this.fileExtension,uid);
