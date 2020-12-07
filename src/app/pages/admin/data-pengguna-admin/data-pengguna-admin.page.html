@@ -23,7 +23,11 @@
           <div>
             <ion-icon name="calendar"></ion-icon>
           </div>
-          <ion-datetime placeholder="Mulai"></ion-datetime>
+          <ion-datetime
+            placeholder="Mulai"
+            [(ngModel)]="startDate"
+            (ionChange)="loadResults()"
+          ></ion-datetime>
         </ion-item>
       </ion-card>
       <ion-card class="card-half">
@@ -31,17 +35,14 @@
           <div>
             <ion-icon name="calendar"></ion-icon>
           </div>
-          <ion-datetime placeholder="Selesai"></ion-datetime>
+          <ion-datetime
+            placeholder="Selesai"
+            [(ngModel)]="endDate"
+            (ionChange)="loadResults()"
+          ></ion-datetime>
         </ion-item>
       </ion-card>
     </ion-card>
-    <ion-row>
-      <ion-col size-md="6" size-xs="12">
-        <ion-button type="submit" color="success" expand="block"
-          >Search</ion-button
-        >
-      </ion-col>
-    </ion-row>
   </ion-card>
   <ion-card class="card-parent">
     <ion-card class="card-half">
