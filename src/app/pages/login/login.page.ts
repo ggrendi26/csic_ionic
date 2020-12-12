@@ -19,7 +19,6 @@ export class LoginPage implements OnInit {
       if(res === null){}
       else {
         this.firestore.isAdmin(res.uid).subscribe( (res:any)=>{
-          console.log(res.role.toLowerCase())
           if(res.role.toLowerCase() == "admin"){
             this.firestore.adminStatus = true;
             this.authService.adminStatus = true;
