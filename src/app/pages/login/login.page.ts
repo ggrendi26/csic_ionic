@@ -15,11 +15,20 @@ export class LoginPage implements OnInit {
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private firestore:FirestoreService) { }
 
   ngOnInit() {
-
     this.authService.userDetails().subscribe(res => {
       if(res === null){}
       else {
-        this.router.navigateByUrl('/index');
+        this.firestore.isAdmin(res.uid).subscribe( (res:any)=>{
+          console.log(res.role.toLowerCase())
+          if(res.role.toLowerCase() == "admin"){
+            this.firestore.adminStatus = true;
+            this.authService.adminStatus = true;
+            this.router.navigateByUrl('/home-admin');
+          }else{
+            this.authService.adminStatus = false;
+            this.router.navigateByUrl('/index');
+          }
+        })
       } 
     }, err => {
       console.log(err);
@@ -50,17 +59,17 @@ export class LoginPage implements OnInit {
   loginUser(value){
     this.authService.loginUser(value)
       .then(res => {
-        this.firestore.isAdmin(res.user.uid).then((result) => {
+        this.firestore.isAdmin(res.user.uid).subscribe( (res:any)=>{
           this.errorMessage = "";
-          if(result == "Admin"){
+          if(res.role.toLowerCase() == "admin"){
+            this.firestore.adminStatus = true;
+            this.authService.adminStatus = true;
             this.router.navigateByUrl('/home-admin');
           }else{
             this.router.navigateByUrl('/index');
+            this.authService.adminStatus = false;
           }
-         }).catch((err) => {
-          this.errorMessage = err.message;
-         });
-      
+        })
       }, err => {
         this.errorMessage = err.message;
       });

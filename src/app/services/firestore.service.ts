@@ -9,6 +9,7 @@ import { Timestamp } from "rxjs/internal/operators/timestamp";
 })
 export class FirestoreService {
   private currDate: string = new Date().toISOString().substr(0, 10);
+  adminStatus:boolean = false;
   constructor(
     public firestore: AngularFirestore,
     private storage: AngularFireStorage
@@ -224,14 +225,8 @@ export class FirestoreService {
   isAdmin(UID: string) {
     let datas = [];
     var docRef = this.firestore.doc(`users/${UID}`);
-    return docRef.ref
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          return doc.data()["role"];
-        }
-      })
-      .catch(function (error) {});
+    return docRef.valueChanges()
+      
   }
   // isAdmin(UID:string) {
   //   let datas=[];
