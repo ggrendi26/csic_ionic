@@ -1,77 +1,68 @@
 <ion-header>
-    <ion-toolbar color="primary">
-        <ion-buttons slot="start">
-            <ion-back-button defaultHref="/home-admin"></ion-back-button>
-        </ion-buttons>
-        <ion-title>Log Lock Admin</ion-title>
-    </ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home-admin"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Log Lock Admin</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-card>
-        <ion-item>
-            <ion-input type="text" placeholder="Nama Pengguna"></ion-input>
-        </ion-item>
-
-        <ion-card class="card-parent">
-            <ion-card class="card-half">
-                <ion-item>
-                    <div>
-                        <ion-icon name="calendar"></ion-icon>
-                    </div>
-                    <ion-datetime placeholder="Mulai"></ion-datetime>
-                </ion-item>
-            </ion-card>
-            <ion-card class="card-half">
-                <ion-item>
-                    <div>
-                        <ion-icon name="calendar"></ion-icon>
-                    </div>
-                    <ion-datetime placeholder="Selesai"></ion-datetime>
-                </ion-item>
-            </ion-card>
-        </ion-card>
-
-        <ion-row>
-            <ion-col size-md="6" size-xs="12">
-                <ion-button type="submit" color="success" expand="block">Search</ion-button>
-            </ion-col>
-        </ion-row>
-    </ion-card>
-
+  <ion-card>
     <ion-card class="card-parent">
-        <ion-card class="card-half">
-            <ion-item routerLink="/data-pengguna-admin"> User </ion-item>
-        </ion-card>
-        <ion-card class="card-half">
-            <ion-item routerLink="/log-lock-admin"> Lock </ion-item>
-        </ion-card>
+      <ion-card class="card-half">
+        <ion-item>
+          <div>
+            <ion-icon name="calendar"></ion-icon>
+          </div>
+          <ion-datetime
+            placeholder="Mulai"
+            [(ngModel)]="startDate"
+            (ionChange)="loadResults()"
+          ></ion-datetime>
+        </ion-item>
+      </ion-card>
+      <ion-card class="card-half">
+        <ion-item>
+          <div>
+            <ion-icon name="calendar"></ion-icon>
+          </div>
+          <ion-datetime
+            placeholder="Selesai"
+            [(ngModel)]="endDate"
+            (ionChange)="loadResults()"
+          ></ion-datetime>
+        </ion-item>
+      </ion-card>
     </ion-card>
+  </ion-card>
 
-    <ion-card>
-        <ion-card-content style="padding-top: 1%">
-            <ion-list>
-                <ion-item>
-                    <ion-icon slot="start" name="ellipse"></ion-icon>
-                    Lucky : <br /> 11 Agustus 2020 - <br /> 31 Agustus 2020 <br /> Rp. 200.000,-
-                </ion-item>
-                <ion-item>
-                    <ion-icon slot="start" name="ellipse"></ion-icon>
-                    Jason : <br /> 11 Agustus 2020 - <br /> 20 Agustus 2020 <br /> Rp. 100.000,-
-                </ion-item>
-                <ion-item>
-                    <ion-icon slot="start" name="ellipse"></ion-icon>
-                    Jason : <br /> 10 Agustus 2020 - <br /> 20 Agustus 2020 <br /> Rp. 20.000,-
-                </ion-item>
-                <ion-item>
-                    <ion-icon slot="start" name="ellipse"></ion-icon>
-                    Grendi : <br /> 10 Agustus 2020 - <br /> 31 Agustus 2020 <br /> Rp. 200.000,-
-                </ion-item>
-                <ion-item>
-                    <ion-icon slot="start" name="ellipse"></ion-icon>
-                    Vincent : <br /> 10 Agustus 2020 - <br /> 31 Agustus 2020 <br /> Rp. 1.000.000,-
-                </ion-item>
-            </ion-list>
-        </ion-card-content>
+  <ion-card class="card-parent">
+    <ion-card class="card-half">
+      <ion-item routerLink="/data-pengguna-admin"> User </ion-item>
     </ion-card>
+    <ion-card class="card-half">
+      <ion-item routerLink="/log-lock-admin"> Lock </ion-item>
+    </ion-card>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content style="padding-top: 1%">
+      <ion-list *ngFor="let lock of allLock">
+        <ion-item> UID: {{lock.uid}} </ion-item>
+        <ion-item lines="none">
+          <ion-datetime
+            value="{{ lock.dateStart }}"
+            displayFormat="DD MMM YYYY"
+          ></ion-datetime>
+          &nbsp;-&nbsp;
+          <ion-datetime
+            value="{{ lock.dateLock }}"
+            displayFormat="DD MMM YYYY"
+          ></ion-datetime>
+        </ion-item>
+        <ion-item>Nominal: Rp. {{ lock.saldoLock }},-</ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
