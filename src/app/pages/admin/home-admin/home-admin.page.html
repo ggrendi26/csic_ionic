@@ -12,35 +12,14 @@
     <ion-card-header color="success">
       <ion-card-subtitle>Data Pengguna</ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content style="padding-top: 1%">
+    <ion-card-content style="padding-top: 1%" *ngFor="let user of allUser;">
       <ion-list>
         <ion-item>
           <ion-avatar>
             <ion-icon name="person-circle"></ion-icon>
           </ion-avatar>
-          Jason <br />
-          Tergabung sejak 10 Agustus 2020
-        </ion-item>
-        <ion-item>
-          <ion-avatar>
-            <ion-icon name="person-circle"></ion-icon>
-          </ion-avatar>
-          Lucky <br />
-          Tergabung sejak 10 Agustus 2020
-        </ion-item>
-        <ion-item>
-          <ion-avatar>
-            <ion-icon name="person-circle"></ion-icon>
-          </ion-avatar>
-          Grendi <br />
-          Tergabung sejak 10 Agustus 2020
-        </ion-item>
-        <ion-item>
-          <ion-avatar>
-            <ion-icon name="person-circle"></ion-icon>
-          </ion-avatar>
-          Vincent <br />
-          Tergabung sejak 10 Agustus 2020
+          {{user.nama}} <br />
+          Tergabung sejak {{user.dateJoined}}
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -51,27 +30,20 @@
       <ion-card-subtitle>Log Lock Pengguna</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content style="padding-top: 1%">
-      <ion-list>
-        <ion-item>
-          Lucky : 11 Agustus 2020 - 31 Agustus 2020 <br />
-          Rp. 200.000,-
+      <ion-list *ngFor="let lock of allLock">
+        <ion-item lines="none"> UID: {{lock.uid}} </ion-item>
+        <ion-item lines="none">
+          <ion-datetime
+            value="{{ lock.dateStart }}"
+            displayFormat="DD MMM YYYY"
+          ></ion-datetime>
+          &nbsp;-&nbsp;
+          <ion-datetime
+            value="{{ lock.dateLock }}"
+            displayFormat="DD MMM YYYY"
+          ></ion-datetime>
         </ion-item>
-        <ion-item>
-          Jason : 11 Agustus 2020 - 20 Agustus 2020 <br />
-          Rp. 100.000,-
-        </ion-item>
-        <ion-item>
-          Jason : 10 Agustus 2020 - 20 Agustus 2020 <br />
-          Rp. 20.000,-
-        </ion-item>
-        <ion-item>
-          Grendi : 10 Agustus 2020 - 31 Agustus 2020 <br />
-          Rp. 200.000,-
-        </ion-item>
-        <ion-item>
-          Vincent : 10 Agustus 2020 - 31 Agustus 2020 <br />
-          Rp. 1.000.000,-
-        </ion-item>
+        <ion-item>Nominal: Rp. {{ lock.saldoLock }},-</ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
