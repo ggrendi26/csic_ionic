@@ -138,7 +138,7 @@ export class IndexUserPage implements OnInit {
     }
     if(this.in.length >= 3){
       for(var i = 0; i < 3; i++){
-        this.lockShow.push(this.in[i]);
+        this.inShow.push(this.in[i]);
       }
     }else {
       this.inShow = this.in;

@@ -15,10 +15,23 @@ export class HistoryLockPage implements OnInit {
   datas=[];
   user: any;
   jumlahSaldo: any;
-  lockDatas: any;
+  profile = null;
+  
+  in = [];
+  out = [];
+  lock = [];
+
   inDatas: any;
+  outDatas: any;
+  lockDatas: any;
+
   inShow = [];
+  outShow = [];
+  lockShow = [];
+
+  LenOut = 0;
   LenIn = 0;
+  LenLock = 0;
   constructor(
     private firestoreService: FirestoreService,
     private authSrv: AuthService,
@@ -38,14 +51,22 @@ export class HistoryLockPage implements OnInit {
       console.log(err);
       // this.router.navigateByUrl('/login');
     });
-  }
-
-  getDataHistoryLock(){
     this.firestoreService.getAllLockDatas().then((docs)=>{
       this.lockDatas = docs;
-      // console.log(this.lockDatas);
+      for(let u of this.lockDatas){
+        if(u.uid === this.userKey){
+          console.log('masuk');
+          this.lock.push(u);
+        }
+      }
+      
+        this.lockShow = this.lock;
+        this.LenLock = this.lockShow.length;
+      console.log(this.lockDatas);
+      console.log(this.userKey);
      }).catch(function(error) {
     });
+    
   }
-
+  
 }

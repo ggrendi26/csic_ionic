@@ -49,14 +49,11 @@
 
     <ion-card>
         <ion-card-content style="padding-top: 1%">
-            <ion-item *ngIf="LenIn == 0">Belum ada pemasukkan</ion-item>
-            <ion-list *ngFor="let in of inShow">
+            <ion-item *ngIf="LenOut == 0">Belum ada pengeluaran</ion-item>
+            <ion-list *ngFor="let out of outShow">
+                <ion-datetime value="{{ out.paymentdate }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
                 <ion-item>
-                    <ion-label position="stacked">Top Up</ion-label>
-                    <ion-datetime value="{{ in.tanggalTopUp }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
-                </ion-item>
-                <ion-item>
-                    {{ in.jumlahTopUp }},-
+                    Virtual Account: {{ out.virtualacc }} <br> Nominal: Rp. {{ out.totalpayment }},-
                 </ion-item>
             </ion-list>
         </ion-card-content>

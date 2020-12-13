@@ -49,14 +49,14 @@
 
     <ion-card>
         <ion-card-content style="padding-top: 1%">
-            <ion-item *ngIf="LenIn == 0">Belum ada penguncian</ion-item>
-            <ion-list *ngFor="let in of inShow">
+            <ion-item *ngIf="LenLock == 0">Belum ada penguncian</ion-item>
+            <ion-list *ngFor="let lock of lockShow">
                 <ion-item>
-                    <ion-label position="stacked">Lock</ion-label>
-                    <ion-datetime value="{{ in.dateLock }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
-                </ion-item>
-                <ion-item>
-                    {{ in.saldoLock }},-
+                    <ion-datetime value="{{ lock.dateStart }}" displayFormat="DD MMM YYYY"></ion-datetime> &nbsp;-&nbsp;
+                    <ion-datetime value="{{ lock.dateLock }}" displayFormat="DD MMM YYYY"></ion-datetime>
+                    <ion-item>
+                        Rp. {{ lock.saldoLock }},-
+                    </ion-item>
                 </ion-item>
             </ion-list>
         </ion-card-content>

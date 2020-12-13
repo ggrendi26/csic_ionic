@@ -25,11 +25,8 @@ export class LogLockAdminPage implements OnInit {
       .then((docs) => {
         this.allLock = docs;
         this.backupLock = this.allLock;
-        // console.log(this.lockDatas);
       })
       .catch(function (error) {});
-
-    console.log();
   }
   loadResults() {
     if (!this.startDate || !this.endDate) {

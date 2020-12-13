@@ -12,19 +12,6 @@
 
 
 <ion-content>
-    <!-- <ion-list>
-        <ion-card-header type="button" (click)="showDetails = !showDetails;">
-            <ion-item color="dark" *ngFor="let item of panduan">
-                <ion-label *ngIf="showDetails">
-                    {{ item.namaPanduan}}
-                </ion-label>
-                <ion-card-subtitle>
-                    {{ item.deskripsiPanduan }}
-                </ion-card-subtitle>
-            </ion-item>
-        </ion-card-header>
-
-    </ion-list> -->
     <ion-card color="light" *ngFor="let item of panduan; let i = index;">
         <ion-card-header type="button" (click)="toggleView(item)">
             <ion-icon name="arrow-down"></ion-icon>
