@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
+import { isBefore, isWithinInterval } from 'date-fns';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
@@ -17,27 +19,22 @@ export class HistoryPayPage implements OnInit {
   datas=[];
   user: any;
   jumlahSaldo: any;
-  in = [];
+  backupPay: any = [];
   out = [];
-  lock = [];
-
-  inDatas: any;
   outDatas: any;
-  lockDatas: any;
-
-  inShow = [];
   outShow = [];
-  lockShow = [];
-
   LenOut = 0;
-  LenIn = 0;
-  LenLock = 0;
+  startDate: any;
+  endDate: any;
+  allPayment: any;
+  invalidSelection: boolean = false;
   constructor(
     private firestoreService: FirestoreService,
     private authSrv: AuthService,
     private router: Router,
     public firestore: AngularFirestore,
-    private paymentSrv: PaymentService
+    private paymentSrv: PaymentService,
+    private toastCtrl: ToastController
     ) { }
     ngOnInit() {
       this.authSrv.userDetails().subscribe(res => {
@@ -63,12 +60,41 @@ export class HistoryPayPage implements OnInit {
             this.out.push(this.outDatas[i]);
           }
         }
-        
-        this.outShow = this.out;
-
+      this.backupPay =this.out;
+      this.outShow = this.out;
+      this.allPayment =this.out;
       this.LenOut = this.outShow.length;
       });
       
     }
-
+    loadResults() {
+      
+      if (!this.startDate || !this.endDate) {
+        return;
+      }
+      if (isBefore(new Date(this.endDate), new Date(this.startDate))) {
+        this.presentToastError();
+        this.allPayment = this.backupPay;
+        this.invalidSelection = true;
+      }
+  
+      const startDate = new Date(this.startDate);
+      const endDate = new Date(this.endDate);
+      this.allPayment = this.backupPay.filter((item) => {
+        return isWithinInterval(new Date(item.paymentdate), {
+          start: startDate,
+          end: endDate,
+        });
+      });
+      this.invalidSelection = false;
+    }
+    async presentToastError() {
+      let toast = this.toastCtrl.create({
+        message: "Invalid date.",
+        duration: 2000,
+        position: "bottom",
+      });
+  
+      (await toast).present();
+    }
 }

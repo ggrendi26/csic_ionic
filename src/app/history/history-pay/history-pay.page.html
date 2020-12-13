@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-back-button defaultHref="/index"></ion-back-button>
         </ion-buttons>
-        <ion-title>Riwayat</ion-title>
+        <ion-title>Riwayat Transfer</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -15,7 +15,7 @@
                     <div>
                         <ion-icon name="calendar"></ion-icon>
                     </div>
-                    <ion-datetime placeholder="Mulai"></ion-datetime>
+                    <ion-datetime placeholder="Mulai" [(ngModel)]="startDate" (ionChange)="loadResults()"></ion-datetime>
                 </ion-item>
             </ion-card>
             <ion-card class="card-half">
@@ -23,16 +23,11 @@
                     <div>
                         <ion-icon name="calendar"></ion-icon>
                     </div>
-                    <ion-datetime placeholder="Selesai"></ion-datetime>
+                    <ion-datetime placeholder="Selesai" [(ngModel)]="endDate" (ionChange)="loadResults()"></ion-datetime>
                 </ion-item>
             </ion-card>
         </ion-card>
 
-        <ion-row>
-            <ion-col size-md="6" size-xs="12">
-                <ion-button type="submit" color="success" expand="block">Search</ion-button>
-            </ion-col>
-        </ion-row>
     </ion-card>
 
     <ion-card class="card-parent">
@@ -50,7 +45,7 @@
     <ion-card>
         <ion-card-content style="padding-top: 1%">
             <ion-item *ngIf="LenOut == 0">Belum ada pengeluaran</ion-item>
-            <ion-list *ngFor="let out of outShow">
+            <ion-list *ngFor="let out of allPayment">
                 <ion-datetime value="{{ out.paymentdate }}" displayFormat="DD-MMM-YYYY"></ion-datetime>
                 <ion-item>
                     Virtual Account: {{ out.virtualacc }} <br> Nominal: Rp. {{ out.totalpayment }},-
