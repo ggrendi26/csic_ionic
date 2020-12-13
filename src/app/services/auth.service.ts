@@ -42,6 +42,9 @@ export class AuthService {
       if (this.afAuth.currentUser) {
         this.afAuth.signOut()
           .then(() => {
+            this.authState= null;
+            this.adminStatus = false;
+            this.uid = '';
             resolve();
           }).catch((error) => {
             reject();
