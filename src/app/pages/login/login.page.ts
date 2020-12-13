@@ -15,6 +15,7 @@ export class LoginPage implements OnInit {
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private firestore:FirestoreService) { }
 
   ngOnInit() {
+    this.firestore.adminStatus = false;
     this.authService.userDetails().subscribe(res => {
       if(res === null){}
       else {
