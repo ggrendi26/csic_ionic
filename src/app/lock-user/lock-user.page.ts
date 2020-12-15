@@ -6,11 +6,10 @@ import {
   Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { LoadingController, NavController, ToastController } from "@ionic/angular";
+import { AlertController, LoadingController, NavController, ToastController } from "@ionic/angular";
 import { AuthService } from "../services/auth.service";
 import { FirestoreService } from "../services/firestore.service";
-import { AngularFireAuth } from "@angular/fire/auth";
-import { isAfter } from 'date-fns'
+import { AngularFirestore } from "@angular/fire/firestore";
 import * as moment from 'moment';
 
 @Component({
@@ -20,6 +19,11 @@ import * as moment from 'moment';
 })
 export class LockUserPage implements OnInit {
   uid;
+  data: any;
+  profile = null;
+  nomorVA: any;
+  saldoUser: number;
+  saldoBefore: number;
   createLockForm: FormGroup;
   errorMessage: string = "";
   successMessage: string = "";
@@ -34,8 +38,9 @@ export class LockUserPage implements OnInit {
     private router: Router,
     private firestoreService: FirestoreService,
     public loadingCtrl: LoadingController,
-    public firestore: AngularFireAuth,
-    private toastCtrl: ToastController
+    public firestore: AngularFirestore,
+    private toastCtrl: ToastController,
+    private alertController: AlertController,
   ) {}
 
   ngOnInit() {
@@ -52,6 +57,28 @@ export class LockUserPage implements OnInit {
         // this.router.navigateByUrl('/login');
       }
     );
+
+    this.firestoreService.getUserInfo(this.uid).then((doc) => {
+      if(doc.exists){
+        // console.log(doc.data());
+        this.profile = doc.data();
+        this.saldoBefore = this.profile.saldo;
+        console.log(this.saldoBefore)
+      }else{
+        console.log('error getting document', doc)
+      }
+    }).catch(function (error){
+      console.log('error getting document', error)
+    });
+
+   
+    var docRef = this.firestore.doc(`users/${this.uid}`);
+    this.firestore.collection('users').doc(this.uid).valueChanges().subscribe(doc =>{
+      // console.log(doc)
+      this.data = doc;
+      this.nomorVA = this.data.virtualAccount;
+      // console.log(this.nomorVA)
+    });
     this.createLockForm = this.formBuilder.group({
       dateLock: new FormControl("", Validators.compose([Validators.required])),
       saldoLock: new FormControl("", Validators.compose([Validators.required])),
@@ -81,8 +108,14 @@ export class LockUserPage implements OnInit {
           });
         }
       );
-
+      if(value.saldoLock > this.saldoBefore){
+        this.presentSaldoKurangAlert();
+      }else{
+        this.firestore.doc(`users/${this.uid}`).update({saldo:this.saldoBefore - value.saldoLock});
+      }
+    
     return await loading.present();
+
   }
 
   async presentToast() {
@@ -107,5 +140,23 @@ export class LockUserPage implements OnInit {
   setDate(getDate){
     var check = moment(getDate).isAfter();
     console.log(getDate, check);
+
+    
 }
+
+async presentSaldoKurangAlert(){
+  const alert = await this.alertController.create({
+    header: 'Saldo Tidak Mencukupi',
+    message: 'Mohon maaf salda anda tidak mencukupi. Silahkan melakukan TopUp terlebih dahulu.',
+    buttons: [
+      {
+        text: "TopUp",
+        handler: ()=> this.router.navigateByUrl('topup-user')
+      }
+    ]
+  });
+  await alert.present();
+}
+
+
 }

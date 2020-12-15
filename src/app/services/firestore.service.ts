@@ -107,7 +107,16 @@ export class FirestoreService {
       console.log(error);
     }
   }
-
+  // getSaldoUser(uid) {
+  //   try {
+  //     return this.storage
+  //       .ref(`saldo/${uid}`)
+  //       .getDownloadURL()
+  //       .toPromise();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
   updateUserCredits(currCredits: number, UID) {
     var docRef = this.firestore.doc(`users/${UID}`);
     return docRef.ref
