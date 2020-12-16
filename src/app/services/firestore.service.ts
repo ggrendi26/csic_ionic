@@ -3,8 +3,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
 import "firebase/firestore";
 import { format } from "date-fns";
-import { Timestamp } from "rxjs/internal/operators/timestamp";
-import { profile } from 'console';
+
 @Injectable({
   providedIn: "root",
 })
