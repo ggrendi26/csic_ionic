@@ -10,6 +10,7 @@ import { format } from "date-fns";
 export class FirestoreService {
   private currDate: string = new Date().toISOString().substr(0, 10);
   adminStatus:boolean = false;
+  imageUrl = ""
   constructor(
     public firestore: AngularFirestore,
     private storage: AngularFireStorage
@@ -113,8 +114,11 @@ export class FirestoreService {
     const file = profileImage;
     const filePath = "profileImage/" + uid + "." + extension;
     const ref = this.storage.ref(filePath);
+    this.imageUrl = profileImage;
     const task = ref.putString(profileImage, 'data_url', {contentType: "image/png"}).then(function(snapshot) {
-     
+      //  snapshot.ref.getDownloadURL().then((data)=>{
+      //     this.imageUrl = data;
+      //  })
       });
   }
   getProfileImageUrl(uid) {

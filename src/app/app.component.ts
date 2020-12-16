@@ -30,18 +30,6 @@ export class AppComponent {
   ) {
     this.initializeApp();
   }
-
-  ionViewWillEnter(){
-    this.firestoreService
-    .getProfileImageUrlPromise(this.profile.profileImageUrl)
-    .then((res) => {
-      console.log("masuk sini")
-      this.profileImageUrl = res + "&date=" + Date.now().toString();
-      // console.log(res)
-    }).catch((err) => {
-      
-    });
-  }
  
   initializeApp() {
     this.platform.ready().then(() => {
@@ -64,16 +52,22 @@ export class AppComponent {
                 this.userName = this.profile.nama;
                 this.userRole = this.profile.role;
                 this.profileImageUrl = "../assets/img/user.png";
-
-                this.firestoreService
+                
+                if(this.firestoreService.imageUrl != ''){
+                  console.log("ionViewWillEnter")
+                  console.log(this.firestoreService.imageUrl)
+                  this.profileImageUrl  = this.firestoreService.imageUrl
+                }else{
+                   this.firestoreService
                   .getProfileImageUrlPromise(this.profile.profileImageUrl)
                   .then((res) => {
                     console.log("masuk sini")
-                    this.profileImageUrl = res + "&date=" + Date.now().toString();
+                    this.firestoreService.imageUrl = res + "&date=" + Date.now().toString();
+                    this.profileImageUrl = this.firestoreService.imageUrl;
                     // console.log(res)
-                  }).catch((err) => {
-                    
-                  });
+                  })
+                }
+               
               } else {
                 console.log("error getting document", doc);
               }

@@ -41,10 +41,16 @@ export class ProfilePage implements OnInit {
       if(doc.exists){
         console.log(doc.data());
         this.profile = doc.data();
-        this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).subscribe((res)=>{
+        if(this.firestoreService.imageUrl != ""){
+          this.profileImageUrl = this.firestoreService.imageUrl;
+
+        }else{
+          this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).subscribe((res)=>{
           this.profileImageUrl = res;
           console.log(res)
         })
+        }
+        
       }else{
         console.log('error getting document', doc)
       }

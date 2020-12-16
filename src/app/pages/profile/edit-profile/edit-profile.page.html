@@ -9,10 +9,8 @@
 
 <ion-content>
   <form class="form" [formGroup]="validations_form" (ngSubmit)="editProfile(validations_form.value)">
-    <ion-item>
-      <ion-thumbnail slot="start">
-        <img  src="{{photoService.photoUrl}}" height="100px">
-      </ion-thumbnail>
+    <ion-item class="center">
+        <img  src="{{photoService.photoUrl}}">
     </ion-item>
     <ion-item>
       <ion-button (click)="addPhotoToGallery()" color="tertiary">Change Profile Picture</ion-button>

@@ -84,7 +84,7 @@ export class EditProfilePage implements OnInit {
         this.nama = this.profile.nama;
         this.tglLahir= this.profile.tglLahir;
         this.alamat= this.profile.alamat;
-        this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).subscribe((res)=>{
+        this.firestoreService.getProfileImageUrlPromise(this.profile.profileImageUrl).then((res)=>{
           this.profileImageUrl =  res;
           this.photoService.photoUrl = res;
         })
