@@ -27,7 +27,8 @@ export class PhotoService {
     });
     this.getBase64Picture(capturedPhoto).then((result) => {
       this.photoUrl = result;
-      this.photoBase64 = result.replace("data:image/png;base64,", "")
+      this.photoBase64 = result
+      // this.photoBase64 = result.replace("data:image/png;base64,", "")
     }).catch((err) => {
       
     });

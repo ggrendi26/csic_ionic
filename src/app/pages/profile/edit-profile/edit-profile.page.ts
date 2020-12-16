@@ -80,17 +80,14 @@ export class EditProfilePage implements OnInit {
   getUserInfo(){
     this.firestoreService.getUserInfo(this.uid).then((doc) => {
       if(doc.exists){
-        console.log(doc.data());
         this.profile = doc.data();
         this.nama = this.profile.nama;
         this.tglLahir= this.profile.tglLahir;
         this.alamat= this.profile.alamat;
-        this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).then((res)=>{
+        this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).subscribe((res)=>{
           this.profileImageUrl =  res;
           this.photoService.photoUrl = res;
-        }).catch((error)=>{
-            console.log(error);
-        });
+        })
       }else{
         console.log('tidak ada document', doc)
       }
@@ -134,8 +131,7 @@ export class EditProfilePage implements OnInit {
   }
   
   uploadProfileImage(){
-    console.log(this.photoService.photoBase64);
-    this.firestoreService.uploadProfileImage(this.photoService.photoBase64, this.fileExtension, this.uid);
+    this.firestoreService.uploadProfileImage(this.photoService.photoBase64, this.fileExtension, this.uid)
   }
 
   addPhotoToGallery() {

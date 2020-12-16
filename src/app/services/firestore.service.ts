@@ -4,6 +4,7 @@ import { AngularFireStorage } from "@angular/fire/storage";
 import "firebase/firestore";
 import { format } from "date-fns";
 import { Timestamp } from "rxjs/internal/operators/timestamp";
+import { profile } from 'console';
 @Injectable({
   providedIn: "root",
 })
@@ -52,6 +53,10 @@ export class FirestoreService {
   getUserInfo(UID: string) {
     return this.firestore.doc(`users/${UID}`).ref.get();
   }
+
+  getUserInfoObserve(UID: string) {
+    return this.firestore.doc(`users/${UID}`).valueChanges();
+  }
   updateProfile(
     nama: string,
     tglLahir: string,
@@ -89,12 +94,28 @@ export class FirestoreService {
       })
       .catch(function (error) {});
   }
+
+  updateProfileImageDoc(UID:string, extension){
+    var profileImageUrl = UID + "." + extension;
+    var docRef = this.firestore.doc(`users/${UID}`);
+    return docRef.ref
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+            docRef.update({
+              profileImageUrl,
+            });
+        }
+      })
+      .catch(function (error) {});
+  }
   uploadProfileImage(profileImage: string, extension, uid: string) {
+    let firestore: AngularFirestore;
     const file = profileImage;
     const filePath = "profileImage/" + uid + "." + extension;
     const ref = this.storage.ref(filePath);
-    const task = ref.putString(profileImage, 'base64').then(function(snapshot) {
-      console.log('Uploaded a base64 string!');
+    const task = ref.putString(profileImage, 'data_url', {contentType: "image/png"}).then(function(snapshot) {
+     
       });
   }
   getProfileImageUrl(uid) {
@@ -102,7 +123,16 @@ export class FirestoreService {
       return this.storage
         .ref(`profileImage/${uid}`)
         .getDownloadURL()
-        .toPromise();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  getProfileImageUrlPromise(uid) {
+    try {
+      return this.storage
+        .ref(`profileImage/${uid}`)
+        .getDownloadURL().toPromise()
     } catch (error) {
       console.log(error);
     }

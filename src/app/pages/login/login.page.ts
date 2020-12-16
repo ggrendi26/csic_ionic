@@ -3,6 +3,7 @@ import { Router } from  "@angular/router";
 import { AuthService } from '../../services/auth.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FirestoreService } from 'src/app/services/firestore.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { FirestoreService } from 'src/app/services/firestore.service';
 export class LoginPage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private firestore:FirestoreService) { }
+  constructor(private authService: AuthService, private loadingCtrl:LoadingController  , private router: Router, private formBuilder: FormBuilder, private firestore:FirestoreService) { }
 
   ngOnInit() {
     this.firestore.adminStatus = false;
@@ -56,7 +57,12 @@ export class LoginPage implements OnInit {
       { type: 'minlength', message: 'Password must be at least 5 characters long.' }
     ]
   };
-  loginUser(value){
+  async loginUser(value){
+    const loading = await this.loadingCtrl.create({
+      spinner: null,
+      message: 'Verifying ...',
+    });
+    await loading.present();
     this.authService.loginUser(value)
       .then(res => {
         this.firestore.isAdmin(res.user.uid).subscribe( (res:any)=>{
@@ -69,9 +75,11 @@ export class LoginPage implements OnInit {
             this.router.navigateByUrl('/index');
             this.authService.adminStatus = false;
           }
+          this.loadingCtrl.dismiss()
         })
       }, err => {
         this.errorMessage = err.message;
+        this.loadingCtrl.dismiss()
       });
     this.validations_form.reset();
 

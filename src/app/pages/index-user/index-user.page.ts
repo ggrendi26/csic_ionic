@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { delay, map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { PaymentService } from 'src/app/services/payment.service';
@@ -14,6 +14,7 @@ export class IndexUserPage implements OnInit {
 
   profile = null;
   profileImageUrl = ""
+  tempImageUrl = ""
 
   userEmail: string;
   userKey: string;
@@ -35,11 +36,12 @@ export class IndexUserPage implements OnInit {
   LenIn = 0;
   LenLock = 0;
 
+  refreshImage="";
   constructor(
     private authSrv: AuthService,
     private router: Router,
     private firestoreService: FirestoreService,
-    private paymentSrv: PaymentService
+    private paymentSrv: PaymentService,
   ) { }
 
   ngOnInit() {
@@ -64,17 +66,15 @@ export class IndexUserPage implements OnInit {
     this.inShow = [];
     this.outShow = [];
     this.lockShow = [];
+    this.profileImageUrl = "../../../assets/img/user.png";
     
     this.firestoreService.getUserInfo(this.userKey).then((doc) => {
       if(doc.exists){
         // console.log(doc.data());
         this.profile = doc.data();
-        this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).then((res)=>{
-          this.profileImageUrl = res;
-          // console.log(res)
-        }).catch((error)=>{
-            console.log(error);
-        });
+        // this.firestoreService.getProfileImageUrl(this.profile.profileImageUrl).subscribe((res)=>{
+        //   this.profileImageUrl = res;
+        // })
       }else{
         console.log('error getting document', doc)
       }
@@ -110,11 +110,17 @@ export class IndexUserPage implements OnInit {
       // console.log(this.lockDatas);
      }).catch(function(error) {
     });
-    for(let u of this.lockDatas){
-      if(u.uid === this.userKey){
-        this.lock.push(u);
+
+    if(this.lockDatas != undefined){
+      for(let u of this.lockDatas){
+        if(u.uid === this.userKey){
+          this.lock.push(u);
+        }
       }
+    }else{
+      this.lock = []
     }
+   
     if(this.lock.length >= 3){
       for(var i = 0; i < 3; i++){
         this.lockShow.push(this.lock[i]);
@@ -131,11 +137,17 @@ export class IndexUserPage implements OnInit {
       // console.log(this.lockDatas);
      }).catch(function(error) {
     });
-    for(let u of this.inDatas){
-      if(u.uid === this.userKey){
-        this.in.push(u);
+
+    if(this.inDatas != undefined){
+      for(let u of this.inDatas){
+        if(u.uid === this.userKey){
+          this.in.push(u);
+        }
       }
+    }else{
+      this.in = []
     }
+   
     if(this.in.length >= 3){
       for(var i = 0; i < 3; i++){
         this.inShow.push(this.in[i]);

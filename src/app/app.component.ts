@@ -17,7 +17,7 @@ export class AppComponent {
   userName: string;
   userRole: string;
   profile = null;
-  profileImageUrl = "";
+  profileImageUrl = "../assets/img/user.png";
 
   constructor(
     private platform: Platform,
@@ -31,6 +31,18 @@ export class AppComponent {
     this.initializeApp();
   }
 
+  ionViewWillEnter(){
+    this.firestoreService
+    .getProfileImageUrlPromise(this.profile.profileImageUrl)
+    .then((res) => {
+      console.log("masuk sini")
+      this.profileImageUrl = res + "&date=" + Date.now().toString();
+      // console.log(res)
+    }).catch((err) => {
+      
+    });
+  }
+ 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -44,29 +56,28 @@ export class AppComponent {
 
           // get user details
           this.firestoreService
-            .getUserInfo(this.userKey)
-            .then((doc) => {
-              if (doc.exists) {
+            .getUserInfoObserve(this.userKey)
+            .subscribe((doc) => {
+              if (doc) {
                 // console.log(doc.data());
-                this.profile = doc.data();
+                this.profile = doc;
                 this.userName = this.profile.nama;
                 this.userRole = this.profile.role;
+                this.profileImageUrl = "../assets/img/user.png";
+
                 this.firestoreService
-                  .getProfileImageUrl(this.profile.profileImageUrl)
+                  .getProfileImageUrlPromise(this.profile.profileImageUrl)
                   .then((res) => {
-                    this.profileImageUrl = res;
+                    console.log("masuk sini")
+                    this.profileImageUrl = res + "&date=" + Date.now().toString();
                     // console.log(res)
-                  })
-                  .catch((error) => {
-                    console.log(error);
+                  }).catch((err) => {
+                    
                   });
               } else {
                 console.log("error getting document", doc);
               }
             })
-            .catch(function (error) {
-              console.log("error getting document", error);
-            });
         } else {
           this.userKey = "";
         }
